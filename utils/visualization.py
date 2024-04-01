@@ -54,7 +54,7 @@ def get_log_data(filename):
 if __name__ == '__main__':
     log_file_root = '../log/'
     # Custom your log files in lists, no more than len(color_list)
-    log_file_list = ['log_0604_2233', 'log_0605_0120', 'log_0531_1507']
+    log_file_list = ['log_0329_1639_16']
     legend_text = ['SeqGAN', 'LeakGAN', 'RelGAN']
 
     color_id = 0
@@ -77,3 +77,4 @@ if __name__ == '__main__':
 
     plt.legend()
     plt.show()
+    plt.savefig('./saved.pdf')

@@ -20,6 +20,7 @@ def get_tokenlized(file):
     tokenlized = list()
     with open(file) as raw:
         for text in raw:
+            # text = nltk.word_tokenize(text.lower(), language='spanish')
             text = nltk.word_tokenize(text.lower())
             tokenlized.append(text)
     return tokenlized
@@ -182,6 +183,24 @@ def write_tensor(filename, tensor):
         for sent in tensor:
             fout.write(' '.join([str(i) for i in sent.tolist()]))
             fout.write('\n')
+            
+def read_tensor(filename):
+    """
+    Read Tensor from a local file (For Oracle data).
+
+    Args:
+    - filename (str): El nombre del archivo desde el que se leerá el tensor.
+
+    Returns:
+    - tensor (list): Una lista de listas que representa el tensor.
+    """
+    tensor = []
+    with open(filename, 'r') as fin:
+        for line in fin:
+            values = line.strip().split()  # Separar valores en cada línea
+            tensor.append([int(val) for val in values])  # Convertir valores a números enteros
+    return torch.tensor(tensor)
+
 
 
 def process_cat_text():

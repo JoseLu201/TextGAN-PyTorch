@@ -32,7 +32,7 @@ rootdir = '../'
 scriptname = 'main.py'
 
 # ===Program===
-if_test = int(True)
+if_test = int(False)
 run_model = 'cot'
 CUDA = int(True)
 oracle_pretrain = int(True)
@@ -48,8 +48,8 @@ tips = 'CoT experiments'
 # vocab_size = [5000, 0, 0]
 
 if_real_data = [int(True)]
-dataset = ['psoe_tweets']
-vocab_size = [5000]
+dataset = ['pp_tweets']
+vocab_size = [256]
 
 # ===Basic Param===
 data_shuffle = int(False)

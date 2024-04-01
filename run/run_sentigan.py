@@ -28,16 +28,16 @@ else:
     print('Missing argument: job_id and gpu_id. Use default job_id: {}, gpu_id: {}'.format(job_id, gpu_id))
 
 # Executables
-executable = 'python'  # specify your own python interpreter path here
+executable = 'python3'  # specify your own python interpreter path here
 rootdir = '../'
 scriptname = 'main.py'
 
 # ===Program===
 if_test = int(False)
 run_model = 'sentigan'
-k_label = 2
+k_label = 1
 CUDA = int(True)
-oracle_pretrain = int(True)
+oracle_pretrain = int(False)
 gen_pretrain = int(False)
 dis_pretrain = int(False)
 MLE_train_epoch = 120
@@ -46,9 +46,9 @@ ADV_train_epoch = 100
 tips = 'SentiGAN experiments'
 
 # ===Oracle or Real===
-if_real_data = [int(False), int(True), int(True)]
-dataset = ['oracle', 'mr15', 'amazon_app_book']
-vocab_size = [5000, 0, 0]
+if_real_data = [int(True), int(True), int(True)]
+dataset = ['pp_tweets']
+vocab_size = [250]
 
 # ===Basic Param===
 data_shuffle = int(False)

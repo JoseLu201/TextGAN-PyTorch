@@ -44,7 +44,7 @@ tips = 'SeqGAN experiments'
 
 # ===Oracle  or Real===
 if_real_data = [int(False), int(True), int(True)]
-dataset = ['oracle', 'image_coco', 'emnlp_news']
+dataset = ['oracle', 'psoe_tweets', 'emnlp_news']
 vocab_size = [5000, 0, 0]
 
 # ===Basic Param===

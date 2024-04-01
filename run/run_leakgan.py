@@ -51,9 +51,9 @@ tips = 'LeakGAN experiments'
 # dataset = ['oracle', 'image_coco', 'emnlp_news']
 # vocab_size = [5000, 0, 0]
 
-if_real_data = [int(True)]
-dataset = ['psoe_tweets']
-vocab_size = [5000]
+if_real_data = [int(False)]
+dataset = ['pp_tweets']
+vocab_size = [256]
 
 # ===Basic Param===
 data_shuffle = int(False)
