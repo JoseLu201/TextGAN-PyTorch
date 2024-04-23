@@ -83,6 +83,7 @@ class GenDataIter:
         """Load real data from local file"""
         self.tokens = get_tokenlized(filename)
         samples_index = tokens_to_tensor(self.tokens, self.word2idx_dict)
+        # print(samples_index)
         return self.prepare(samples_index)
 
 

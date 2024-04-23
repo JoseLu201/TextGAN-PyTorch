@@ -35,7 +35,7 @@ rootdir = '../'
 scriptname = 'main.py'
 
 # ===Program===
-if_test = int(True)
+if_test = int(False)
 run_model = 'leakgan'
 CUDA = int(True)
 oracle_pretrain = int(True)
@@ -51,9 +51,9 @@ tips = 'LeakGAN experiments'
 # dataset = ['oracle', 'image_coco', 'emnlp_news']
 # vocab_size = [5000, 0, 0]
 
-if_real_data = [int(False)]
+if_real_data = [int(True)]
 dataset = ['pp_tweets']
-vocab_size = [256]
+vocab_size = [0]
 
 # ===Basic Param===
 data_shuffle = int(False)

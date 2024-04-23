@@ -43,13 +43,13 @@ ADV_train_epoch = 200
 tips = 'MaliGAN experiments'
 
 # ===Oracle  or Real===
-# if_real_data = [int(False), int(True), int(True)]
+# if_real_data = [int(False), int(True), int(True)]                    
 # dataset = ['oracle', 'image_coco', 'emnlp_news']
 # vocab_size = [5000, 0, 0]
 
-if_real_data = [int(False)]
-dataset = ['psoe_tweets']
-vocab_size = [5000]
+if_real_data = [int(True)]
+dataset = ['pp_tweets']
+vocab_size = [0]
 
 
 # ===Basic Param===

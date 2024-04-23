@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Python: (Subprocess)",  // Configuration name (descriptive)
+        "type": "python",                               // Type of launch (Python)
+        "request": "launch",                             // Request type (launch)
+        "module": "run_maligan",                      // **Key part:** Module to launch (without .py)
+        "args": [],                                       // Optional arguments to pass
+        "subProcess": true,                              // Use subprocess for debugging
+        "cwd": "${workspaceFolder}/run",                 // Working directory (project root)
+        "console": "integratedTerminal"                   // Optional: Launch output in terminal
+      }
+    ]
+  }
+  

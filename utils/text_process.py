@@ -20,8 +20,8 @@ def get_tokenlized(file):
     tokenlized = list()
     with open(file) as raw:
         for text in raw:
-            # text = nltk.word_tokenize(text.lower(), language='spanish')
-            text = nltk.word_tokenize(text.lower())
+            text = nltk.word_tokenize(text.lower(), language='spanish')
+            # text = nltk.word_tokenize(text.lower())
             tokenlized.append(text)
     return tokenlized
 
@@ -149,7 +149,11 @@ def tokens_to_tensor(tokens, dictionary):
             sent_ten.append(cfg.padding_idx)
             i += 1
         tensor.append(sent_ten[:cfg.max_seq_len])
-    return torch.LongTensor(tensor)
+    try:
+        ret = torch.LongTensor(tensor)
+    except Exception as e:
+        print(f"Error: {e}")
+    return ret
 
 
 def padding_token(tokens):

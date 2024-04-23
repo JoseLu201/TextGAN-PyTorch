@@ -1,10 +1,30 @@
 import pandas as pd
-
-import pandas as pd
 import os
+import preprocessor as p # clean tweets, erasing hastag and mentions
+import unidecode
+from tqdm import tqdm
+
+from nltk.corpus import stopwords
+import nltk
+
+STOPWORDS = set(stopwords.words('spanish'))
+
+def sanitize_tweet(tweet):
+    # Limpieza adicional de caracteres especiales
+    tweet = ''.join(e for e in tweet if e.isalnum() or e.isspace())
+    # Eliminar stopwords
+    tweet = ' '.join([word for word in tweet.split() if word.lower() not in STOPWORDS])
+    # Lematización (opcional)
+    # tweet = ' '.join([nltk.WordNetLemmatizer().lemmatize(word) for word in tweet.split()])
+    return tweet
 
 # Leer el archivo CSV
 df = pd.read_csv('tweets_politica_kaggle.csv', sep='\t')
+
+for i in tqdm(range(df.shape[0])):
+    # Limpiamos el tweet con tweet-preprocessor y lo pasamos a minúsculas
+    cleaned_tweet = p.clean(unidecode.unidecode(df.iloc[i]['tweet'].lower()))
+    df.loc[i, 'clean_tweet'] = sanitize_tweet(cleaned_tweet)
 
 # Crear una carpeta para cada partido y guardar los datos
 for partido in df['partido'].unique():
@@ -16,9 +36,9 @@ for partido in df['partido'].unique():
     tweets_partido = df[df['partido'] == partido]
     
     # Guardar los tweets del partido en un archivo CSV
-    tweets_partido.to_csv(os.path.join(carpeta_partido, f'{partido}_tweets.csv'), index=False)
-    
+    tweets_partido[['partido', 'timestamp', 'tweet', 'clean_tweet']].to_csv(os.path.join(carpeta_partido, f'{partido}_tweets.csv'), index=False)
+
     # Guardar los tweets del partido en un archivo de texto
     with open(os.path.join(carpeta_partido, f'orig_{partido}_tweets.txt'), 'w') as f:
-        for tweet in tweets_partido['tweet']:
+        for tweet in tweets_partido['clean_tweet']:
             f.write(tweet + '\n')

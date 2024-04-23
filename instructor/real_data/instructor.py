@@ -21,6 +21,7 @@ from utils.data_loader import GenDataIter
 from utils.helpers import Signal, create_logger, get_fixed_temperature
 from utils.text_process import load_dict, write_tokens, tensor_to_tokens
 
+import traceback
 
 class BasicInstructor:
     def __init__(self, opt):
@@ -40,7 +41,9 @@ class BasicInstructor:
         try:
             self.train_data = GenDataIter(cfg.train_data)
             self.test_data = GenDataIter(cfg.test_data, if_test_data=True)
-        except:
+        except Exception as e:
+            
+            print("Error creando el iterador del dataset: ", traceback.format_exc())
             pass
 
         try:
@@ -99,7 +102,7 @@ class BasicInstructor:
             if cfg.CUDA:
                 inp, target = inp.cuda(), target.cuda()
 
-            hidden = model.init_hidden(data_loader.batch_size)
+            hidden = model.init_hidden(data_loader.batch_size)            
             pred = model.forward(inp, hidden)
             loss = criterion(pred, target.view(-1))
             self.optimize(optimizer, loss, model)
