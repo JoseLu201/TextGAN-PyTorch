@@ -1,0 +1,129 @@
+====================================================================================================
+> training arguments:
+>>> if_test: 0
+>>> run_model: cot
+>>> k_label: 2
+>>> dataset: psoe_tweets
+>>> model_type: vanilla
+>>> loss_type: rsgan
+>>> mu_type: ragan
+>>> eval_type: Ra
+>>> d_type: Ra
+>>> if_real_data: 0
+>>> cuda: 1
+>>> device: 0
+>>> devices: 0
+>>> shuffle: 0
+>>> gen_init: normal
+>>> dis_init: normal
+>>> n_parent: 1
+>>> eval_b_num: 8
+>>> lambda_fq: 1.0
+>>> lambda_fd: 0.0
+>>> d_out_mean: True
+>>> freeze_dis: False
+>>> freeze_clas: False
+>>> use_all_real_fake: False
+>>> use_population: False
+>>> samples_num: 10000
+>>> vocab_size: 5000
+>>> mle_epoch: 0
+>>> clas_pre_epoch: 10
+>>> adv_epoch: 20000
+>>> inter_epoch: 15
+>>> batch_size: 64
+>>> max_seq_len: 20
+>>> start_letter: 1
+>>> padding_idx: 0
+>>> gen_lr: 0.01
+>>> gen_adv_lr: 0.0001
+>>> dis_lr: 0.0001
+>>> clip_norm: 5.0
+>>> pre_log_step: 10
+>>> adv_log_step: 100
+>>> train_data: dataset/psoe_tweets.txt
+>>> test_data: dataset/testdata/psoe_tweets_test.txt
+>>> temp_adpt: exp
+>>> evo_temp_step: 1
+>>> temperature: 1
+>>> ora_pretrain: 1
+>>> gen_pretrain: 0
+>>> dis_pretrain: 0
+>>> adv_g_step: 1
+>>> rollout_num: 16
+>>> gen_embed_dim: 32
+>>> gen_hidden_dim: 32
+>>> goal_size: 16
+>>> step_size: 4
+>>> mem_slots: 1
+>>> num_heads: 2
+>>> head_size: 256
+>>> d_step: 5
+>>> d_epoch: 3
+>>> adv_d_step: 1
+>>> adv_d_epoch: 3
+>>> dis_embed_dim: 64
+>>> dis_hidden_dim: 64
+>>> num_rep: 64
+>>> use_nll_oracle: 1
+>>> use_nll_gen: 1
+>>> use_nll_div: 1
+>>> use_bleu: 1
+>>> use_self_bleu: 1
+>>> use_clas_acc: True
+>>> use_ppl: 0
+>>> log_file: log/log_0329_1955_36.txt
+>>> save_root: save/20240329/psoe_tweets/cot_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl20_temp1_lfd0.0_T0329_1955_36/
+>>> signal_file: run_signal.txt
+>>> tips: CoT experiments
+====================================================================================================
+Starting Generator MLE Training...
+Starting Adversarial Training...
+[ADV]: epoch = 0, NLL_oracle = 11.1314, NLL_gen = 8.5171, NLL_div = 8.517
+[ADV]: epoch = 100, NLL_oracle = 10.0699, NLL_gen = 7.9092, NLL_div = 7.8484
+[ADV]: epoch = 200, NLL_oracle = 10.1034, NLL_gen = 7.8665, NLL_div = 7.907
+[ADV]: epoch = 300, NLL_oracle = 10.0662, NLL_gen = 7.8399, NLL_div = 7.8847
+[ADV]: epoch = 400, NLL_oracle = 9.9937, NLL_gen = 7.8147, NLL_div = 7.8138
+[ADV]: epoch = 500, NLL_oracle = 9.9715, NLL_gen = 7.807, NLL_div = 7.7822
+[ADV]: epoch = 600, NLL_oracle = 9.9581, NLL_gen = 7.7733, NLL_div = 7.7826
+[ADV]: epoch = 700, NLL_oracle = 9.9291, NLL_gen = 7.7614, NLL_div = 7.7563
+[ADV]: epoch = 800, NLL_oracle = 9.8409, NLL_gen = 7.7201, NLL_div = 7.6662
+[ADV]: epoch = 900, NLL_oracle = 9.8654, NLL_gen = 7.6871, NLL_div = 7.7222
+[ADV]: epoch = 1000, NLL_oracle = 9.8388, NLL_gen = 7.6688, NLL_div = 7.6655
+[ADV]: epoch = 1100, NLL_oracle = 9.7762, NLL_gen = 7.635, NLL_div = 7.633
+[ADV]: epoch = 1200, NLL_oracle = 9.7768, NLL_gen = 7.5942, NLL_div = 7.6361
+[ADV]: epoch = 1300, NLL_oracle = 9.6754, NLL_gen = 7.5618, NLL_div = 7.5343
+[ADV]: epoch = 1400, NLL_oracle = 9.6465, NLL_gen = 7.5285, NLL_div = 7.5121
+[ADV]: epoch = 1500, NLL_oracle = 9.6134, NLL_gen = 7.5094, NLL_div = 7.4617
+[ADV]: epoch = 1600, NLL_oracle = 9.5919, NLL_gen = 7.4541, NLL_div = 7.4523
+[ADV]: epoch = 1700, NLL_oracle = 9.5778, NLL_gen = 7.4227, NLL_div = 7.43
+[ADV]: epoch = 1800, NLL_oracle = 9.5534, NLL_gen = 7.415, NLL_div = 7.3846
+[ADV]: epoch = 1900, NLL_oracle = 9.5308, NLL_gen = 7.3734, NLL_div = 7.3743
+[ADV]: epoch = 2000, NLL_oracle = 9.5371, NLL_gen = 7.3423, NLL_div = 7.3617
+[ADV]: epoch = 2100, NLL_oracle = 9.4187, NLL_gen = 7.3077, NLL_div = 7.2528
+[ADV]: epoch = 2200, NLL_oracle = 9.4147, NLL_gen = 7.2816, NLL_div = 7.2512
+[ADV]: epoch = 2300, NLL_oracle = 9.4642, NLL_gen = 7.2616, NLL_div = 7.2931
+[ADV]: epoch = 2400, NLL_oracle = 9.3876, NLL_gen = 7.2352, NLL_div = 7.2045
+[ADV]: epoch = 2500, NLL_oracle = 9.3996, NLL_gen = 7.2079, NLL_div = 7.2168
+[ADV]: epoch = 2600, NLL_oracle = 9.3123, NLL_gen = 7.2157, NLL_div = 7.1292
+[ADV]: epoch = 2700, NLL_oracle = 9.3533, NLL_gen = 7.1698, NLL_div = 7.161
+[ADV]: epoch = 2800, NLL_oracle = 9.3374, NLL_gen = 7.1604, NLL_div = 7.1359
+[ADV]: epoch = 2900, NLL_oracle = 9.2656, NLL_gen = 7.1683, NLL_div = 7.0508
+[ADV]: epoch = 3000, NLL_oracle = 9.2576, NLL_gen = 7.1273, NLL_div = 7.0388
+[ADV]: epoch = 3100, NLL_oracle = 9.247, NLL_gen = 7.1184, NLL_div = 7.0385
+[ADV]: epoch = 3200, NLL_oracle = 9.2076, NLL_gen = 7.1013, NLL_div = 7.0025
+[ADV]: epoch = 3300, NLL_oracle = 9.196, NLL_gen = 7.1044, NLL_div = 6.9597
+[ADV]: epoch = 3400, NLL_oracle = 9.2373, NLL_gen = 7.0823, NLL_div = 7.0199
+[ADV]: epoch = 3500, NLL_oracle = 9.1905, NLL_gen = 7.0522, NLL_div = 6.957
+[ADV]: epoch = 3600, NLL_oracle = 9.1243, NLL_gen = 7.0602, NLL_div = 6.8996
+[ADV]: epoch = 3700, NLL_oracle = 9.1723, NLL_gen = 7.0838, NLL_div = 6.943
+[ADV]: epoch = 3800, NLL_oracle = 9.1228, NLL_gen = 7.0313, NLL_div = 6.8853
+[ADV]: epoch = 3900, NLL_oracle = 9.1558, NLL_gen = 7.0259, NLL_div = 6.9272
+[ADV]: epoch = 4000, NLL_oracle = 9.0484, NLL_gen = 7.0637, NLL_div = 6.7954
+[ADV]: epoch = 4100, NLL_oracle = 9.0994, NLL_gen = 7.0476, NLL_div = 6.8084
+[ADV]: epoch = 4200, NLL_oracle = 9.0524, NLL_gen = 7.0422, NLL_div = 6.7935
+[ADV]: epoch = 4300, NLL_oracle = 9.0444, NLL_gen = 7.0247, NLL_div = 6.7703
+[ADV]: epoch = 4400, NLL_oracle = 9.0355, NLL_gen = 7.0258, NLL_div = 6.7527
+[ADV]: epoch = 4500, NLL_oracle = 9.0525, NLL_gen = 7.0206, NLL_div = 6.7898
+[ADV]: epoch = 4600, NLL_oracle = 9.0313, NLL_gen = 6.9959, NLL_div = 6.7539
+[ADV]: epoch = 4700, NLL_oracle = 8.998, NLL_gen = 7.0089, NLL_div = 6.7187
