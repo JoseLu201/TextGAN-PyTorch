@@ -8,6 +8,8 @@
 # Copyrights (C) 2018. All Rights Reserved.
 import math
 
+import os
+os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
 import torch
 import torch.nn as nn
 
@@ -15,7 +17,7 @@ import config as cfg
 from utils.helpers import truncated_normal_
 
 import pdb
-
+torch.autograd.set_detect_anomaly(True)
 
 class LSTMGenerator(nn.Module):
 
@@ -38,8 +40,18 @@ class LSTMGenerator(nn.Module):
         self.softmax = nn.LogSoftmax(dim=-1)
 
         self.init_params()
+        
+    def validate_input(self, inp):
+        if not isinstance(inp, torch.Tensor):
+            raise ValueError("Input data (inp) must be a torch.Tensor")
+        if torch.any(torch.isnan(inp)):
+            raise ValueError("Input data (inp) contains NaN values")
+        if torch.any(torch.isinf(inp)):
+            raise ValueError("Input data (inp) contains inf values")
+        return inp  # Return the validated input
 
     def forward(self, inp, hidden, need_hidden=False):
+        inp = self.validate_input(inp) # Comentar linea
         """
         Embeds input and applies LSTM
         :param inp: batch_size * seq_len
@@ -54,8 +66,11 @@ class LSTMGenerator(nn.Module):
         out = out.contiguous().view(-1, self.hidden_dim)  # out: (batch_size * len) * hidden_dim
         out = self.lstm2out(out)  # (batch_size * seq_len) * vocab_size
         # out = self.temperature * out  # temperature
+        # try:
         pred = self.softmax(out)
-
+        # except Exception as e:
+        #     print(f"Exception caught: {e}")
+            
         if need_hidden:
             return pred, hidden
         else:

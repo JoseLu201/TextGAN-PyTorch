@@ -47,8 +47,8 @@ tips = 'SentiGAN experiments'
 
 # ===Oracle or Real===
 if_real_data = [int(True), int(True), int(True)]
-dataset = ['pp_tweets']
-vocab_size = [250]
+dataset = ['vox_tweets']
+vocab_size = [0]
 
 # ===Basic Param===
 data_shuffle = int(False)

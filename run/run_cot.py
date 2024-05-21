@@ -35,7 +35,7 @@ scriptname = 'main.py'
 if_test = int(False)
 run_model = 'cot'
 CUDA = int(True)
-oracle_pretrain = int(True)
+oracle_pretrain = int(False)
 gen_pretrain = int(False)
 dis_pretrain = int(False)
 MLE_train_epoch = 0
@@ -48,8 +48,8 @@ tips = 'CoT experiments'
 # vocab_size = [5000, 0, 0]
 
 if_real_data = [int(True)]
-dataset = ['pp_tweets']
-vocab_size = [256]
+dataset = ['vox_tweets']
+vocab_size = [0]
 
 # ===Basic Param===
 data_shuffle = int(False)
@@ -57,7 +57,9 @@ model_type = 'vanilla'
 gen_init = 'normal'
 dis_init = 'normal'
 samples_num = 10000
-batch_size = 64
+# batch_size = 64
+# max_seq_len = 20
+batch_size = 8
 max_seq_len = 20
 gen_lr = 1e-2
 pre_log_step = 10

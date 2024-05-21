@@ -94,7 +94,6 @@ class CoTInstructor(BasicInstructor):
         g_loss = []
         for step in range(g_step):
             inp, target = GenDataIter.prepare(self.gen.sample(cfg.batch_size, cfg.batch_size), gpu=cfg.CUDA)
-
             # ===Train===
             rewards = self.dis(inp, self.dis.init_hidden(cfg.batch_size))
             loss = self.gen.get_loss(inp, rewards)
@@ -110,6 +109,7 @@ class CoTInstructor(BasicInstructor):
         d_loss = []
         for step in range(d_step):
             # prepare loader for training
+            
             real = list(self.train_data.loader)[cur_epoch % len(self.train_data.loader)]  # traverse all real data
             real_inp, real_tar = real['input'], real['target']
             fake_inp, fake_tar = GenDataIter.prepare(self.gen.sample(cfg.batch_size, cfg.batch_size), gpu=cfg.CUDA)
