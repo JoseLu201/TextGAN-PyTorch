@@ -39,7 +39,7 @@ oracle_pretrain = int(False)
 gen_pretrain = int(False)
 dis_pretrain = int(False)
 MLE_train_epoch = 0
-ADV_train_epoch = 20000
+ADV_train_epoch = 1 # 20000
 tips = 'CoT experiments'
 
 # ===Oracle  or Real===
@@ -56,10 +56,8 @@ data_shuffle = int(False)
 model_type = 'vanilla'
 gen_init = 'normal'
 dis_init = 'normal'
-samples_num = 10000
-# batch_size = 64
-# max_seq_len = 20
-batch_size = 8
+samples_num = 10 # 10000
+batch_size = 16 # 64
 max_seq_len = 20
 gen_lr = 1e-2
 pre_log_step = 10
@@ -74,12 +72,12 @@ gen_hidden_dim = 32
 ADV_d_step = 1
 
 # ===Metrics===
-use_nll_oracle = int(True)
-use_nll_gen = int(True)
-use_nll_div = int(True)
-use_bleu = int(True)
-use_self_bleu = int(True)
-use_ppl = int(False)
+use_nll_oracle = int(False) # int(True)
+use_nll_gen = int(False) # int(True)
+use_nll_div = int(False) # int(True)
+use_bleu = int(False) # int(True)
+use_self_bleu = int(False) # int(False)
+use_ppl = int(False) # int(False)
 
 args = [
     # Program

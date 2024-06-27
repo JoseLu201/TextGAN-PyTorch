@@ -27,7 +27,7 @@ else:
     print('Missing argument: job_id and gpu_id. Use default job_id: {}, gpu_id: {}'.format(job_id, gpu_id))
 
 # Executables
-executable = '/home/zhiwei/.virtualenvs/zhiwei/bin/python'  # specify your own python interpreter path here
+executable = 'python3'  # specify your own python interpreter path here
 rootdir = '../'
 scriptname = 'main.py'
 
@@ -39,20 +39,24 @@ oracle_pretrain = int(True)
 gen_pretrain = int(False)
 dis_pretrain = int(False)
 MLE_train_epoch = 0
-ADV_train_epoch = 200
+ADV_train_epoch = 1 # 200
 tips = 'DGSAN experiments'
 
 # ===Oracle  or Real===
-if_real_data = [int(False), int(True), int(True)]
-dataset = ['oracle', 'image_coco', 'emnlp_news']
-vocab_size = [5000, 0, 0]
+# if_real_data = [int(False), int(True), int(True)]
+# dataset = ['oracle', 'image_coco', 'emnlp_news']
+# vocab_size = [5000, 0, 0]
+
+if_real_data = [int(True)]
+dataset = ['vox_tweets']
+vocab_size = [0]
 
 # ===Basic Param===
 data_shuffle = int(False)
 model_type = 'vanilla'
 gen_init = 'truncated_normal'
-samples_num = 10000
-batch_size = 64
+samples_num = 10 # 10000
+batch_size = 8
 max_seq_len = 20
 gen_lr = 1e-2
 pre_log_step = 10
@@ -63,12 +67,12 @@ gen_embed_dim = 32
 gen_hidden_dim = 32
 
 # ===Metrics===
-use_nll_oracle = int(True)
-use_nll_gen = int(True)
-use_nll_div = int(True)
-use_bleu = int(True)
-use_self_bleu = int(True)
-use_ppl = int(False)
+use_nll_oracle = int(False) # int(True)
+use_nll_gen = int(False) # int(True)
+use_nll_div = int(False) # int(True)
+use_bleu = int(False) # int(True)
+use_self_bleu = int(False) # int(True)
+use_ppl = int(False) # int(False)
 
 args = [
     # Program

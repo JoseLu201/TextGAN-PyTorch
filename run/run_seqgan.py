@@ -32,24 +32,18 @@ rootdir = '../'
 scriptname = 'main.py'
 
 # ===Program===
-if_test = int(False)
+if_test = int(True)
 run_model = 'seqgan'
 CUDA = int(True)
 oracle_pretrain = int(True)
 gen_pretrain = int(False)
 dis_pretrain = int(False)
-MLE_train_epoch = 120
-ADV_train_epoch = 200
+MLE_train_epoch = 1 #120 
+ADV_train_epoch = 1 #200 
 tips = 'SeqGAN experiments'
 
-# ===Oracle  or Real===
-# if_real_data = [int(False), int(True), int(True)]
-# dataset = ['oracle', 'psoe_tweets', 'emnlp_news']
-# vocab_size = [5000, 0, 0]
-
-
 if_real_data = [int(True)]
-dataset = ['pp_tweets']
+dataset = ['vox_tweets']
 vocab_size = [0]
 
 
@@ -58,35 +52,35 @@ data_shuffle = int(False)
 model_type = 'vanilla'
 gen_init = 'normal'
 dis_init = 'uniform'
-samples_num = 10000
-batch_size = 64
+samples_num = 100 # 10000
+batch_size = 16 # 64
 max_seq_len = 20
 gen_lr = 0.01
 dis_lr = 1e-4
-pre_log_step = 10
+pre_log_step = 1 # 10
 adv_log_step = 1
 
 # ===Generator===
 ADV_g_step = 1
-rollout_num = 16
-gen_embed_dim = 32
-gen_hidden_dim = 32
+rollout_num = 1 # 16
+gen_embed_dim = 8 # 32
+gen_hidden_dim = 8 # 32
 
 # ===Discriminator===
-d_step = 5
-d_epoch = 3
-ADV_d_step = 4
-ADV_d_epoch = 2
-dis_embed_dim = 64
-dis_hidden_dim = 64
+d_step = 1 # 5
+d_epoch = 1 # 3
+ADV_d_step = 1 # 4
+ADV_d_epoch = 1 # 2
+dis_embed_dim = 8 # 64
+dis_hidden_dim = 8 # 64
 
 # ===Metrics===
-use_nll_oracle = int(True)
-use_nll_gen = int(True)
-use_nll_div = int(True)
-use_bleu = int(True)
-use_self_bleu = int(True)
-use_ppl = int(False)
+use_nll_oracle = int(False) # int(True)
+use_nll_gen = int(False) # int(True)
+use_nll_div = int(False) # int(True)
+use_bleu = int(False) # int(True)
+use_self_bleu = int(False) # int(True)
+use_ppl = int(False) # int(False)
 
 args = [
     # Program

@@ -159,7 +159,6 @@ class LeakGANInstructor(BasicInstructor):
             pos_samples = self.train_data.target
             neg_samples = self.gen.sample(cfg.samples_num, cfg.batch_size, self.dis)
             dis_data = DisDataIter(pos_samples, neg_samples)
-
             for epoch in range(d_epoch):
                 # ===Train===
                 d_loss, train_acc = self.train_dis_epoch(self.dis, dis_data.loader, self.dis_criterion,

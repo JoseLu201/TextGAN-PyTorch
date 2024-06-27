@@ -12,7 +12,7 @@ import time
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
+torch.autograd.set_detect_anomaly(True)
 import config as cfg
 from utils.helpers import truncated_normal_
 
@@ -70,7 +70,10 @@ class LeakGAN_G(nn.Module):
 
         # Manager
         mana_out, mana_hidden = self.manager(feature, mana_hidden)  # mana_out: 1 * batch_size * hidden_dim
+        # CAMBIOS
         mana_out = self.mana2goal(mana_out.permute([1, 0, 2]))  # batch_size * 1 * goal_out_size
+        # mana_out = self.mana2goal(mana_out.permute([1, 0, 2])).contiguous()  # batch_size * 1 * goal_out_size
+        
         cur_goal = F.normalize(mana_out, dim=-1)
         _real_goal = self.goal2goal(real_goal)  # batch_size * goal_size
         _real_goal = F.normalize(_real_goal, p=2, dim=-1).unsqueeze(-1)  # batch_size * goal_size * 1

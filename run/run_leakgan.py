@@ -12,7 +12,7 @@ from subprocess import call
 
 import os
 
-os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
+# os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
 # os.environ["PYTORCH_USE_CUDA_DSA"] = "1"
 
 # Job id and gpu_id
@@ -40,9 +40,9 @@ run_model = 'leakgan'
 CUDA = int(True)
 oracle_pretrain = int(True)
 gen_pretrain = int(False)
-dis_pretrain = int(False)
-MLE_train_epoch = 8
-ADV_train_epoch = 200
+dis_pretrain = int(True)
+MLE_train_epoch = 1 # 8
+ADV_train_epoch = 5 # 200
 inter_epoch = 10
 tips = 'LeakGAN experiments'
 
@@ -52,7 +52,7 @@ tips = 'LeakGAN experiments'
 # vocab_size = [5000, 0, 0]
 
 if_real_data = [int(True)]
-dataset = ['pp_tweets']
+dataset = ['vox_tweets']
 vocab_size = [0]
 
 # ===Basic Param===
@@ -60,8 +60,8 @@ data_shuffle = int(False)
 model_type = 'vanilla'
 gen_init = 'normal'
 dis_init = 'uniform'
-samples_num = 10000
-batch_size = 64
+samples_num = 10 # 10000
+batch_size = 4 # 64
 max_seq_len = 20
 gen_lr = 0.0015
 dis_lr = 5e-5
@@ -77,20 +77,20 @@ goal_size = 16
 step_size = 4
 
 # ===Discriminator===
-d_step = 5
-d_epoch = 3
-ADV_d_step = 5
-ADV_d_epoch = 3
+d_step = 1 # 5
+d_epoch = 1 # 3
+ADV_d_step = 1 # 5
+ADV_d_epoch = 1 # 3
 dis_embed_dim = 64
 dis_hidden_dim = 64
 
 # ===Metrics===
-use_nll_oracle = int(True)
-use_nll_gen = int(True)
-use_nll_div = int(True)
-use_bleu = int(True)
-use_self_bleu = int(True)
-use_ppl = int(False)
+use_nll_oracle = int(False) # int(True)
+use_nll_gen = int(False) # int(True)
+use_nll_div = int(False) # int(True)
+use_bleu = int(False) # int(True)
+use_self_bleu = int(False) # int(True)
+use_ppl = int(False) # int(False)
 
 args = [
     # Program

@@ -44,8 +44,7 @@ class GenDataIter:
         self.input = self._all_data_('input')
         self.target = self._all_data_('target')
 
-    def __read_data__(self, samples):
-        # print("SAMPLES: ", samples)
+    def __read_data__(self, samples):   
         """
         input: same as target, but start with start_letter.
         """
@@ -70,8 +69,6 @@ class GenDataIter:
 
     @staticmethod
     def prepare(samples, gpu=False):
-        # print("samples: ", samples)
-        # print("samples.size(): ", samples.size())
         """Add start_letter to samples as inp, target same as samples"""
         inp = torch.zeros(samples.size()).long()
         target = samples

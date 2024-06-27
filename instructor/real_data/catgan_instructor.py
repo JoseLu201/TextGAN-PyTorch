@@ -383,7 +383,9 @@ class CatGANInstructor(BasicInstructor):
 
     def train_gen_epoch(self, model, data_loader, criterion, optimizer):
         total_loss = 0
+       
         for i, data in enumerate(data_loader):
+            print(f"len: {i} . {len(data_loader)}")
             inp, target, label = data['input'], data['target'], data['label']
             if cfg.CUDA:
                 inp, target, label = inp.cuda(), target.cuda(), label.cuda()

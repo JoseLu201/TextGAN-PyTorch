@@ -40,15 +40,19 @@ CUDA = int(True)
 ora_pretrain = int(True)
 gen_pretrain = int(False)
 dis_pretrain = int(False)
-MLE_train_epoch = 150
-clas_pre_epoch = 5
-ADV_train_epoch = 2000
+MLE_train_epoch = 1 # 150
+clas_pre_epoch = 1 # 5
+ADV_train_epoch = 1 # 2000
 tips = '{} experiments'
 
 # ===Oracle or Real===
-if_real_data = [int(False), int(True), int(True), int(False), int(True), int(True)]
-dataset = ['oracle', 'mr15', 'amazon_app_book', 'oracle', 'image_coco', 'emnlp_news']
-vocab_size = [5000, 0, 0, 5000, 0, 0]
+# if_real_data = [int(False), int(True), int(True), int(False), int(True), int(True)]
+# dataset = ['oracle', 'mr15', 'amazon_app_book', 'oracle', 'image_coco', 'emnlp_news']
+# vocab_size = [5000, 0, 0, 5000, 0, 0]
+
+if_real_data = [int(True)]
+dataset = ['all_tweets']
+vocab_size = [0]
 
 # ===CatGAN Param===
 n_parent = 1
@@ -56,7 +60,9 @@ loss_type = 'ragan'
 mu_type = 'ragan rsgan'
 eval_type = 'Ra'
 temp_adpt = 'exp'
-temperature = [1, 100, 100, 1, 100, 100]
+# temperature = [1, 100, 100, 1, 100, 100]
+temperature = [100]
+
 d_out_mean = int(True)
 lambda_fq = 1.0
 lambda_fd = 0.001
@@ -67,8 +73,8 @@ data_shuffle = int(False)
 model_type = 'vanilla'
 gen_init = 'truncated_normal'
 dis_init = 'uniform'
-samples_num = 10000
-batch_size = 64
+samples_num = 1 # 10000
+batch_size = 8 # 64
 max_seq_len = 20
 gen_lr = 0.01
 gen_adv_lr = 1e-4
@@ -82,22 +88,30 @@ gen_embed_dim = 32
 gen_hidden_dim = 32
 mem_slots = 1
 num_heads = 2
-head_size = [512, 512, 512, 256, 256, 256]
+head_size = [256, 512, 512, 256, 256, 256]
 
 # ===Discriminator===
-ADV_d_step = 3
+ADV_d_step = 1 # 3
 dis_embed_dim = 64
 dis_hidden_dim = 64
-num_rep = 64
+num_rep = 8 # 64
 
 # ===Metrics===
-use_nll_oracle = int(True)
-use_nll_gen = int(True)
-use_nll_div = int(True)
-use_bleu = int(True)
-use_self_bleu = int(True)
-use_clas_acc = int(True)
-use_ppl = int(False)
+# use_nll_oracle = int(True)
+# use_nll_gen = int(True)
+# use_nll_div = int(True)
+# use_bleu = int(True)
+# use_self_bleu = int(True)
+# use_clas_acc = int(True)
+# use_ppl = int(False)
+
+use_nll_oracle = int(False) # int(True)
+use_nll_gen = int(False) # int(True)
+use_nll_div = int(False) # int(True)
+use_bleu = int(False) # int(True)
+use_self_bleu = int(False) # int(False)
+use_clas_acc = int(False)
+use_ppl = int(False) # int(False)
 
 args = [
     # Program
