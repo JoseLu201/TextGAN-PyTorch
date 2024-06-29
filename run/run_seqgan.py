@@ -43,7 +43,7 @@ ADV_train_epoch = 200
 tips = 'SeqGAN experiments'
 
 if_real_data = [int(True)]
-dataset = ['vox_tweets']
+dataset = ['ciudadanos_tweets']
 vocab_size = [0]
 
 
