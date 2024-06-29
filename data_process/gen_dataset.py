@@ -7,10 +7,11 @@ from tqdm import tqdm
 from nltk.corpus import stopwords
 import nltk
 
-# p.set_options(p.OPT.URL, p.OPT.MENTION, p.OPT.HASHTAG, p.OPT.EMOJI)
 
-STOPWORDS = set(stopwords.words('spanish'))
 def sanitize_tweet(tweet):
+    # p.set_options(p.OPT.URL, p.OPT.MENTION, p.OPT.HASHTAG, p.OPT.EMOJI)
+
+    STOPWORDS = set(stopwords.words('spanish'))
     # Define las opciones de tokenización
     
     # Limpieza adicional de caracteres especiales
@@ -29,29 +30,29 @@ def sanitize_tweet(tweet):
     tweet = ''.join(e for e in tweet if e.isalnum() or e.isspace() or e in ['.', ',', '!', '?', '¿', '¡', ':', ';', '(', ')', '[', ']', '{', '}', '"', "'", '-', '_', '$'])
     return tweet
 
+if __name__ == "__main__":
+    # Leer el archivo CSV
+    df = pd.read_csv('tweets_politica_kaggle.csv', sep='\t')
+    # df = pd.read_csv('test.csv', sep='\t')
 
-# Leer el archivo CSV
-df = pd.read_csv('tweets_politica_kaggle.csv', sep='\t')
-# df = pd.read_csv('test.csv', sep='\t')
+    for i in tqdm(range(df.shape[0])):
+        # Limpiamos el tweet con tweet-preprocessor y lo pasamos a minúsculas
+        # cleaned_tweet = p.clean(unidecode.unidecode(df.iloc[i]['tweet'].lower()))
+        df.loc[i, 'clean_tweet'] = sanitize_tweet(df.loc[i, 'tweet'])
 
-for i in tqdm(range(df.shape[0])):
-    # Limpiamos el tweet con tweet-preprocessor y lo pasamos a minúsculas
-    # cleaned_tweet = p.clean(unidecode.unidecode(df.iloc[i]['tweet'].lower()))
-    df.loc[i, 'clean_tweet'] = sanitize_tweet(df.loc[i, 'tweet'])
+    # Crear una carpeta para cada partido y guardar los datos
+    for partido in df['partido'].unique():
+        # Crear la carpeta si no existe
+        carpeta_partido = os.path.join('partidos_v3', partido)
+        os.makedirs(carpeta_partido, exist_ok=True)
+        
+        # Filtrar los tweets del partido actual
+        tweets_partido = df[df['partido'] == partido]
+        
+        # Guardar los tweets del partido en un archivo CSV
+        tweets_partido[['partido', 'timestamp', 'tweet', 'clean_tweet']].to_csv(os.path.join(carpeta_partido, f'{partido}_tweets.csv'), index=False)
 
-# Crear una carpeta para cada partido y guardar los datos
-for partido in df['partido'].unique():
-    # Crear la carpeta si no existe
-    carpeta_partido = os.path.join('partidos_v3', partido)
-    os.makedirs(carpeta_partido, exist_ok=True)
-    
-    # Filtrar los tweets del partido actual
-    tweets_partido = df[df['partido'] == partido]
-    
-    # Guardar los tweets del partido en un archivo CSV
-    tweets_partido[['partido', 'timestamp', 'tweet', 'clean_tweet']].to_csv(os.path.join(carpeta_partido, f'{partido}_tweets.csv'), index=False)
-
-    # Guardar los tweets del partido en un archivo de texto
-    with open(os.path.join(carpeta_partido, f'orig_{partido}_tweets.txt'), 'w') as f:
-        for tweet in tweets_partido['clean_tweet']:
-            f.write(tweet + '\n')
+        # Guardar los tweets del partido en un archivo de texto
+        with open(os.path.join(carpeta_partido, f'orig_{partido}_tweets.txt'), 'w') as f:
+            for tweet in tweets_partido['clean_tweet']:
+                f.write(tweet + '\n')

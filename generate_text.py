@@ -13,6 +13,17 @@
 import torch
 import config as cfg
 from models.generator import LSTMGenerator
+from models.SeqGAN_G import SeqGAN_G
+from models.LeakGAN_G import LeakGAN_G
+from models.MaliGAN_G import MaliGAN_G
+from models.JSDGAN_G import JSDGAN_G
+from models.RelGAN_G import RelGAN_G
+from models.DPGAN_G import DPGAN_G
+from models.DGSAN_G import DGSAN_G
+from models.CoT_G import CoT_G
+from models.SentiGAN_G import SentiGAN_G
+from models.CatGAN_G import CatGAN_G
+
 from utils.text_process import load_dict
 import os
 
@@ -32,8 +43,23 @@ def parse_log_file(log_file_path):
                 params[key] = value
     return params
 
-def load_generator(model_path, embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx, gpu=False):
-    generator = LSTMGenerator(embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx, gpu)
+def load_generator(model_class, model_path, embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx, gpu=False):
+    
+    models_dict = {
+        '' : LSTMGenerator,
+        'seqgan': SeqGAN_G,
+        'leakgan': LeakGAN_G,
+        'maligan': MaliGAN_G,           
+        'jsdgan': JSDGAN_G,
+        'dpgan': DPGAN_G,
+        'relgan': RelGAN_G,
+        'sentigan': SentiGAN_G,
+        'catgan': CatGAN_G,
+        'dgsan': DGSAN_G,
+        'cot': CoT_G
+    }
+
+    generator = models_dict[model_class](embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx, gpu)
     generator.load_state_dict(torch.load(model_path))
     if gpu:
         generator = generator.cuda()
@@ -61,8 +87,7 @@ if __name__ == "__main__":
     
     params = parse_log_file(log_file_path)
     
-    print(params)
-    
+    model_class = params['run_model'] 
     embedding_dim = int(params['gen_embed_dim'])
     hidden_dim = int(params['gen_hidden_dim'])
     vocab_size = int(params['vocab_size'])
@@ -71,7 +96,7 @@ if __name__ == "__main__":
     gpu = int(params['cuda'])
     dataset = params['dataset']
 
-    generator = load_generator(model_path, embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx, gpu)
+    generator = load_generator(model_class, model_path, embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx, gpu)
     
     num_samples = 2
     batch_size = 2  # Tweets en paralelo que se obtendran
