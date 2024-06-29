@@ -3,7 +3,7 @@ import os
 import shutil
 
 # Nombre del partido político
-partido = "psoe"
+partido = "ciudadanos"
 dir = "partidos_v3"
 PATH = f"{dir}/{partido}/"
 FILE = f"orig_{partido}_tweets.txt"
@@ -23,7 +23,7 @@ test_file = f"test/{partido}_tweets_test.txt"
 
 try:
     os.makedirs(os.path.join(PATH, 'test'), exist_ok=True)
-    percent = 10
+    percent = 1
     # os.makedirs(f"{PATH}/test")
     # Guardar los datos de entrenamiento en un archivo
     with open(os.path.join(PATH, train_file), 'w') as file:
