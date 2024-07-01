@@ -24,7 +24,7 @@ elif len(sys.argv) > 1:
 else:
     job_id = 0
     gpu_id = 0
-    print('Missing argument: job_id and gpu_id. Use default job_id: {}, gpu_id: {}'.format(job_id, gpu_id))
+    print('Missing argument: job_id and gpu_id. Use default job_id: {},     : {}'.format(job_id, gpu_id))
 
 # Executables
 executable = 'python3'  # specify your own python interpreter path here
@@ -32,7 +32,7 @@ rootdir = '../'
 scriptname = 'main.py'
 
 # ===Program===
-if_test = int(True)
+if_test = int(False)
 run_model = 'seqgan'
 CUDA = int(True)
 oracle_pretrain = int(True)
@@ -53,7 +53,7 @@ model_type = 'vanilla'
 gen_init = 'normal'
 dis_init = 'uniform'
 samples_num =  10000
-batch_size = 64
+batch_size = 32
 max_seq_len = 20
 gen_lr = 0.01
 dis_lr = 1e-4
