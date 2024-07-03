@@ -26,6 +26,15 @@ def get_tokenlized(file):
     return tokenlized
 
 
+def get_tokenlized_words(words_list):
+    """tokenlize the input words list"""
+    tokenlized = list()
+    for text in words_list:
+        text = nltk.word_tokenize(text.lower(), language='spanish')
+        tokenlized.append(text)
+    return tokenlized
+
+
 def get_word_list(tokens):
     """get word set"""
     word_set = list()

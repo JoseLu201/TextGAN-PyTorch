@@ -1,33 +1,27 @@
-def count_chars(filename):
-    char_map = {}
-    with open(filename, 'r') as file:
-        for line in file:
-            for char in line:
-                if char in char_map:
-                    char_map[char] += 1
-                else:
-                    char_map[char] = 1
-    return char_map
+import pandas as pd
+import os
+import preprocessor as p # clean tweets, erasing hastag and mentions
+import unidecode
+from tqdm import tqdm
+
+from nltk.corpus import stopwords
+import nltk
+import re
 
 
-# print(count_chars('partidos_v3/vox/orig_vox_tweets.txt').keys())
-print(sorted(list(count_chars('partidos_v3/vox/orig_vox_tweets.txt').keys())))
+def sanitize_tweet(tweet):
+    p.set_options(p.OPT.URL, p.OPT.MENTION, p.OPT.EMOJI)
 
-print(len(count_chars('partidos_v3/vox/orig_vox_tweets.txt')))
-print()
-print(sorted(list(count_chars('partidos_v3/vox/vox_tweets.txt').keys())))
-print(len(count_chars('partidos_v3/vox/vox_tweets.txt')))
+    tweet = tweet.lower()
+    
+    tweet = unidecode.unidecode(tweet)
+    # tweet = ''.join(e if e.isalnum() or e.isspace() or e in ['.', ',', '!', '?', '¿', '¡', ':', ';', '(', ')', '[', ']', '{', '}', '"', "'", '-', '_', '$'] else ' ' for e in tweet )
+    tweet = p.tokenize(tweet)
+    tweet = re.sub(r'([.,!?¿¡:;(){}\[\]"\'_\-])', r' \1 ', tweet)  # Añade espacios alrededor de signos de puntuación
+    tweet = re.sub(r'\s+', ' ', tweet).strip()  # Elimina espacios adicionales
 
-def diff_keys(file1, file2):
-    map1 = count_chars(file1)
-    map2 = count_chars(file2)
+    return tweet
 
-    keys1 = set(map1.keys())
-    keys2 = set(map2.keys())
 
-    return keys1 - keys2
 
-file1 = 'partidos_v3/vox/orig_vox_tweets.txt'
-file2 = 'partidos_v3/vox/vox_tweets.txt'
-
-print(diff_keys(file1, file2))
+print(sanitize_tweet("hola.adios  . ! como? estsa #hola @adios como?"))

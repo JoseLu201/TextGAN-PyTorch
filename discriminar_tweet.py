@@ -3,6 +3,7 @@ import torch.nn.functional as F
 import os
 from utils.text_process import load_dict
 from data_process.gen_dataset import sanitize_tweet
+
 from utils.data_loader import GenDataIter
 
 from models.discriminator import CNNClassifier, GRUDiscriminator, CNNDiscriminator
@@ -18,7 +19,7 @@ from models.SentiGAN_D import SentiGAN_D
 from models.CatGAN_D import CatGAN_D
 import config as cfg
 import io
-from utils.data_loader import get_tokenlized
+from utils.data_loader import get_tokenlized, get_tokenlized_words, tokens_to_tensor
 
 def parse_log_file(log_file_path):
     """Parse and clean the log file to extract model parameters."""
@@ -57,37 +58,34 @@ def load_discriminator(model_class, model_path, embedding_dim, hidden_dim, vocab
     dis.eval()
     return dis
 
-def classify_tweets(discriminator, file_tweets, word2idx_dict, padding_idx, gpu=False):
-    
-    data_loader = GenDataIter(file_tweets).loader
-    print(f"Data Loader Length: {type(data_loader.dataset.data)}")
-    print(f"Data Loader Length: {len(data_loader.dataset.data)}")
-    
-    for data in (data_loader.dataset):
-        print("INpt")
-        inp, target = data['input'], data['target']
-        inp = inp.unsqueeze(0)
-
+def classify_tweets(discriminator, tweets_tokenized, word2idx_dict, padding_idx, gpu=False):
+    predictions = []
+    for data in tweets_tokenized:
+        inp = data.unsqueeze(0)
         # Print the shape of inp to debug
         print("Shape of inp:", inp.shape)
         
         if cfg.CUDA:
-            inp, target = inp.cuda(), target.cuda()
+            inp = inp.cuda()
 
         pred = discriminator.forward(inp)   
-        print("Pred", pred)
         with torch.no_grad():
             logits = discriminator.forward(inp)
             probs = F.softmax(logits, dim=1)
-            predictions = torch.argmax(probs, dim=1)
+            predictions.append(torch.argmax(probs, dim=1))
 
-        return predictions.cpu().numpy()
+    return [p.cpu().numpy() for p in predictions]
+    # return predictions.cpu().numpy()
     
 
 if __name__ == "__main__":
     gpu = torch.cuda.is_available()
 
-    data_path = 'save_borrar/20240617/vox_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl156_temp1_lfd0.0_T0617_1802_46'
+    # data_path = './save/20240701/ciudadanos_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl174_temp1_lfd0.0_T0701_0639_50'
+    # log_file_path = os.path.join(data_path, 'log.txt')
+    # model_path = os.path.join(data_path, 'models', 'dis_ADV_training_ADV_00015.pt')
+    
+    data_path = 'save/20240701/ciudadanos_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl174_temp1_lfd0.0_T0701_0639_50'
     log_file_path = os.path.join(data_path, 'log.txt')
     model_path = os.path.join(data_path, 'models', 'dis_MLE_00119.pt')
     
@@ -119,25 +117,32 @@ if __name__ == "__main__":
     discriminator = load_discriminator(model_class, model_path, embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx, gpu)
 
     # Tweets to classify
-    tweets = [
-        "todo el psoe aplaudiendo a franco, fundador de la seguridad social.son tan ignorantes que, pese a la mala fe, a veces aciertan. https://t.co/1zvzvzvzvzv",
-        "no hay que olvidar que el psoe es el partido de los ERES",
-        "el psoe es el partido de los ERES",
-        "todo el psoe aplaudiendo a franco, fundador de la seguridad social.son tan ignorantes que, pese a la mala fe, a veces aciertan. https://t.co/1zvzvzvzvzv",
-
-    ]
+    # tweets = [
+    #     "todo el psoe aplaudiendo a franco, fundador de la seguridad social.son tan ignorantes que, pese a la mala fe, a veces aciertan. https://t.co/1zvzvzvzvzv",
+    #     "no hay que olvidar que el psoe es el partido de los ERES",
+    #     "el psoe es el partido de los ERES",
+    #     "todo el psoe aplaudiendo a franco, fundador de la seguridad social.son tan ignorantes que, pese a la mala fe, a veces aciertan. https://t.co/1zvzvzvzvzv",
+    # ]
+    tweets = ['Independiente el PSOE es el partido de los ERES', 
+              'me GUSTAN los animales',
+              'vistazo emancipacionlos mundial barrio mariola maltratando contundente.aplicacion tantos festival inmediata hachazos centradas odio afianzar odio'
+              ]
     
+    print("tweets", tweets)
     tweets_sani = [sanitize_tweet(t) for t in tweets]
-    print(tweets_sani)
-  
-
-    tmp_tweets = "dis_sani_tweets.txt"
-
-    with open(tmp_tweets, 'w') as f:
-        for idx, tweet in enumerate(tweets_sani):
-            f.write(tweet + '\n')
+    print("tweets_sani",tweets_sani)
+    tweets_tokenized = get_tokenlized_words(tweets_sani)
+    print("tweets_tokenized",tweets_tokenized)
+    tweets_tokenized = tokens_to_tensor(tweets_tokenized, word2idx_dict)
+    # print("Error en la tokenizacion ES POSIBLE QUE LAS PALABRAS NO ESTEN EN EL DICCIONARIO")   
+    print("tensor",len(tweets_tokenized))
+    print("tensor",tweets_tokenized)
     
     # Classify the tweets
-    predictions = classify_tweets(discriminator, tmp_tweets, word2idx_dict, padding_idx, gpu)
-    print("Predictions:", predictions)
+    predictions = classify_tweets(discriminator, tweets_tokenized, word2idx_dict, padding_idx, gpu)
+
+    for pred, tw in zip(predictions, tweets):
+        # print(f"{tw :<100} -> {'Real' if pred == 1 else 'Fake'}")
+        print(f"{'Real' if pred == 1 else 'Fake'} -> {tw :<100}")
+
 

@@ -41,17 +41,8 @@ class LSTMGenerator(nn.Module):
 
         self.init_params()
         
-    def validate_input(self, inp):
-        if not isinstance(inp, torch.Tensor):
-            raise ValueError("Input data (inp) must be a torch.Tensor")
-        if torch.any(torch.isnan(inp)):
-            raise ValueError("Input data (inp) contains NaN values")
-        if torch.any(torch.isinf(inp)):
-            raise ValueError("Input data (inp) contains inf values")
-        return inp  # Return the validated input
 
     def forward(self, inp, hidden, need_hidden=False):
-        inp = self.validate_input(inp) # Comentar linea
         """
         Embeds input and applies LSTM
         :param inp: batch_size * seq_len
@@ -66,10 +57,7 @@ class LSTMGenerator(nn.Module):
         out = out.contiguous().view(-1, self.hidden_dim)  # out: (batch_size * len) * hidden_dim
         out = self.lstm2out(out)  # (batch_size * seq_len) * vocab_size
         # out = self.temperature * out  # temperature
-        # try:
         pred = self.softmax(out)
-        # except Exception as e:
-        #     print(f"Exception caught: {e}")
             
         if need_hidden:
             return pred, hidden
@@ -93,13 +81,7 @@ class LSTMGenerator(nn.Module):
 
             for i in range(self.max_seq_len):
                 out, hidden = self.forward(inp, hidden, need_hidden=True)  # out: batch_size * vocab_size
-                # pdb.set_trace()  # Set a breakpoint at the current line
-
-                try:
-                    next_token = torch.multinomial(torch.exp(out), 1)  # batch_size * 1 (sampling from each row)
-                except Exception as e:
-                    print(f"Exception caught: {e}")
-                    #pdb.post_mortem()     
+                next_token = torch.multinomial(torch.exp(out), 1)  # batch_size * 1 (sampling from each row)   
                 samples[b * batch_size:(b + 1) * batch_size, i] = next_token.view(-1)
                 inp = next_token.view(-1)
         samples = samples[:num_samples]

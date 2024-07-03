@@ -23,8 +23,9 @@ from models.DGSAN_G import DGSAN_G
 from models.CoT_G import CoT_G
 from models.SentiGAN_G import SentiGAN_G
 from models.CatGAN_G import CatGAN_G
-
+from data_process.gen_dataset import sanitize_tweet
 from utils.text_process import load_dict
+from utils.data_loader import get_tokenlized, get_tokenlized_words, tokens_to_tensor
 import os
 
 
@@ -81,7 +82,7 @@ def idx_to_word(samples, idx2word_dict, padding_idx):
 if __name__ == "__main__":
     
     
-    data_path = 'save_borrar/20240617/vox_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl156_temp1_lfd0.0_T0617_1802_46'
+    data_path = 'save/20240701/ciudadanos_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl174_temp1_lfd0.0_T0701_0639_50'
     log_file_path = os.path.join(data_path, 'log.txt')
     model_path = os.path.join(data_path, 'models', 'gen_MLE_00119.pt')
     
@@ -95,16 +96,25 @@ if __name__ == "__main__":
     padding_idx = int(params['padding_idx'])
     gpu = int(params['cuda'])
     dataset = params['dataset']
+    
+    # load dictionary
+    print("Loading dictionary... ", dataset)
+    word2idx_dict, idx2word_dict = load_dict(dataset)
 
     generator = load_generator(model_class, model_path, embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx, gpu)
     
     num_samples = 2
     batch_size = 2  # Tweets en paralelo que se obtendran
-    start_letter = cfg.start_letter
-    samples = generate_tweets(generator, num_samples, batch_size, start_letter, gpu)
+    start_letter = ['RACISMO']
     
-    # load dictionary
-    word2idx_dict, idx2word_dict = load_dict(dataset)
+    
+    start_letter = [sanitize_tweet(t) for t in start_letter]
+    start_letter = get_tokenlized_words(start_letter)
+    print("Start letter:", start_letter)
+    start_letter = [int(word2idx_dict.get(sl[0])) for sl in start_letter]
+    print("Start letter:", start_letter)
+    
+    samples = generate_tweets(generator, num_samples, batch_size, start_letter, gpu)
     
     tweets = idx_to_word(samples, idx2word_dict, padding_idx) 
 

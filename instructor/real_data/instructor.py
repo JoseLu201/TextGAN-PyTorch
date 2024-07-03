@@ -262,8 +262,8 @@ class BasicInstructor:
             torch.save(self.gen.state_dict(), cfg.save_model_root + 'gen_{}_{:05d}.pt'.format(phase, epoch))
             torch.save(self.dis.state_dict(), cfg.save_model_root + 'dis_{}_{:05d}.pt'.format(phase, epoch))
         else:
-            torch.save(self.gen.state_dict(), cfg.save_model_root + 'gen_ADV_training_{}_{:05d}.pt'.format(phase, epoch))
-            torch.save(self.dis.state_dict(), cfg.save_model_root + 'dis_ADV_training_{}_{:05d}.pt'.format(phase, epoch))
+            torch.save(self.gen.state_dict(), cfg.save_model_root + 'gen_{}_training_{:05d}.pt'.format(phase, epoch))
+            torch.save(self.dis.state_dict(), cfg.save_model_root + 'dis_{}_training_{:05d}.pt'.format(phase, epoch))
             
         save_sample_path = cfg.save_samples_root + 'samples_{}_{:05d}.txt'.format(phase, epoch)
         samples = self.gen.sample(cfg.batch_size, cfg.batch_size)
