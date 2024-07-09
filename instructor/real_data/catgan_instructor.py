@@ -66,17 +66,18 @@ class CatGANInstructor(BasicInstructor):
         self.all_metrics.append(self.clas_acc)
 
     def init_model(self):
-        if cfg.gen_pretrain:
-            for i in range(cfg.n_parent):
-                self.log.info('Load MLE pretrained generator gen: {}'.format(cfg.pretrained_gen_path + '%d' % i))
-                self.parents[i] = torch.load(cfg.pretrained_gen_path + '%d' % 0, map_location='cpu')
+        if not cfg.if_checkpoints:
+            if cfg.gen_pretrain:
+                for i in range(cfg.n_parent):
+                    self.log.info('Load MLE pretrained generator gen: {}'.format(cfg.pretrained_gen_path + '%d' % i))
+                    self.parents[i] = torch.load(cfg.pretrained_gen_path + '%d' % 0, map_location='cpu')
 
-        if cfg.CUDA:
-            self.gen = self.gen.cuda()
-            if cfg.multi_gpu:
-                self.dis = torch.nn.parallel.DataParallel(self.dis, device_ids=cfg.devices)
-            self.dis = self.dis.cuda()
-            self.clas = self.clas.cuda()
+            if cfg.CUDA:
+                self.gen = self.gen.cuda()
+                if cfg.multi_gpu:
+                    self.dis = torch.nn.parallel.DataParallel(self.dis, device_ids=cfg.devices)
+                self.dis = self.dis.cuda()
+                self.clas = self.clas.cuda()
 
     def load_gen(self, parent, parent_opt, mle=False):
         self.gen.load_state_dict(copy.deepcopy(parent))
@@ -88,24 +89,25 @@ class CatGANInstructor(BasicInstructor):
             self.gen_adv_opt.zero_grad()
 
     def _run(self):
-        # ===Pre-train Classifier with real data===
-        if cfg.use_clas_acc:
-            self.log.info('Start training Classifier...')
-            self.train_classifier(cfg.PRE_clas_epoch)
+        if not cfg.if_checkpoints:
+            # ===Pre-train Classifier with real data===
+            if cfg.use_clas_acc:
+                self.log.info('Start training Classifier...')
+                self.train_classifier(cfg.PRE_clas_epoch)
 
-        # ===Pre-train Generator===
-        if not cfg.gen_pretrain:
-            for i, (parent, parent_opt) in enumerate(zip(self.parents, self.parent_mle_opts)):
-                self.log.info('Starting Generator-{} MLE Training...'.format(i))
-                self.load_gen(parent, parent_opt, mle=True)  # load state dict
-                self.pretrain_generator(cfg.MLE_train_epoch)
-                self.parents[i] = copy.deepcopy(self.gen.state_dict())  # save state dict
-                if cfg.if_save and not cfg.if_test:
-                    torch.save(self.gen.state_dict(), cfg.pretrained_gen_path + '%d' % i)
-                    self.log.info('Save pre-trained generator: {}'.format(cfg.pretrained_gen_path + '%d' % i))
+            # ===Pre-train Generator===
+            if not cfg.gen_pretrain:
+                for i, (parent, parent_opt) in enumerate(zip(self.parents, self.parent_mle_opts)):
+                    self.log.info('Starting Generator-{} MLE Training...'.format(i))
+                    self.load_gen(parent, parent_opt, mle=True)  # load state dict
+                    self.pretrain_generator(cfg.MLE_train_epoch)
+                    self.parents[i] = copy.deepcopy(self.gen.state_dict())  # save state dict
+                    if cfg.if_save and not cfg.if_test:
+                        torch.save(self.gen.state_dict(), cfg.pretrained_gen_path + '%d' % i)
+                        self.log.info('Save pre-trained generator: {}'.format(cfg.pretrained_gen_path + '%d' % i))
 
         # ===Adv-train===
-        progress = tqdm(range(cfg.ADV_train_epoch))
+        progress = tqdm(range(self.checkpoint_epoch, cfg.ADV_train_epoch))
         for adv_epoch in progress:
             if cfg.temperature == 1:
                 score, fit_score, select_mu = self.evolve_generator(cfg.ADV_g_step)

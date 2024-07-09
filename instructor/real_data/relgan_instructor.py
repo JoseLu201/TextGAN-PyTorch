@@ -37,16 +37,17 @@ class RelGANInstructor(BasicInstructor):
 
     def _run(self):
         # ===PRE-TRAINING (GENERATOR)===
-        if not cfg.gen_pretrain:
-            self.log.info('Starting Generator MLE Training...')
-            self.pretrain_generator(cfg.MLE_train_epoch)
-            if cfg.if_save and not cfg.if_test:
-                torch.save(self.gen.state_dict(), cfg.pretrained_gen_path)
-                print('Save pretrain_generator: {}'.format(cfg.pretrained_gen_path))
+        if not cfg.if_checkpoints:
+            if not cfg.gen_pretrain:
+                self.log.info('Starting Generator MLE Training...')
+                self.pretrain_generator(cfg.MLE_train_epoch)
+                if cfg.if_save and not cfg.if_test:
+                    torch.save(self.gen.state_dict(), cfg.pretrained_gen_path)
+                    print('Save pretrain_generator: {}'.format(cfg.pretrained_gen_path))
 
         # # ===ADVERSARIAL TRAINING===
         self.log.info('Starting Adversarial Training...')
-        progress = tqdm(range(cfg.ADV_train_epoch))
+        progress = tqdm(range(self.checkpoint_epoch, cfg.ADV_train_epoch))
         for adv_epoch in progress:
             self.sig.update()
             if self.sig.adv_sig:

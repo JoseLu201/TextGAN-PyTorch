@@ -11,7 +11,6 @@
 
 
 import torch
-import config as cfg
 from models.generator import LSTMGenerator
 from models.SeqGAN_G import SeqGAN_G
 from models.LeakGAN_G import LeakGAN_G
@@ -25,7 +24,7 @@ from models.SentiGAN_G import SentiGAN_G
 from models.CatGAN_G import CatGAN_G
 from data_process.gen_dataset import sanitize_tweet
 from utils.text_process import load_dict
-from utils.data_loader import get_tokenlized, get_tokenlized_words, tokens_to_tensor
+from utils.data_loader import get_tokenlized_words
 import os
 
 
@@ -105,7 +104,7 @@ if __name__ == "__main__":
     
     num_samples = 2
     batch_size = 2  # Tweets en paralelo que se obtendran
-    start_letter = ['RACISMO']
+    start_letter = ['RACISMO', 'CORRUPCIÓN']
     
     
     start_letter = [sanitize_tweet(t) for t in start_letter]

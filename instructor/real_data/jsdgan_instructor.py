@@ -13,6 +13,7 @@ import torch.optim as optim
 import config as cfg
 from instructor.real_data.instructor import BasicInstructor
 from models.JSDGAN_G import JSDGAN_G
+from utils.helpers import path_ADV_checkpoints
 
 
 class JSDGANInstructor(BasicInstructor):
@@ -28,9 +29,19 @@ class JSDGANInstructor(BasicInstructor):
         self.gen_opt = optim.Adam(self.gen.parameters(), lr=cfg.gen_lr)
 
     def init_model(self):
-        if cfg.gen_pretrain:
-            self.log.info('Load MLE pretrained generator gen: {}'.format(cfg.pretrained_gen_path))
-            self.gen.load_state_dict(torch.load(cfg.pretrained_gen_path, map_location='cuda:{}'.format(cfg.device)))
+        
+        if cfg.if_checkpoints:
+            self.log.info('Load checkpoint...')
+            self.checkpoint_epoch, paths = path_ADV_checkpoints(cfg.checkpoints_path)
+            self.log.info('Checkpoint epoch: %d' % self.checkpoint_epoch)
+            
+            self.checkpoint_epoch += 1 # start from the next epoch
+            
+            self.gen.load_state_dict(torch.load(paths['gen'], map_location='cuda:{}'.format(cfg.device)))
+        else:
+            if cfg.gen_pretrain:
+                self.log.info('Load MLE pretrained generator gen: {}'.format(cfg.pretrained_gen_path))
+                self.gen.load_state_dict(torch.load(cfg.pretrained_gen_path, map_location='cuda:{}'.format(cfg.device)))
 
         if cfg.CUDA:
             self.gen = self.gen.cuda()

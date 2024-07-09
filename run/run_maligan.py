@@ -36,10 +36,10 @@ if_test = int(False)
 run_model = 'maligan'
 CUDA = int(True)
 oracle_pretrain = int(True)
-gen_pretrain = int(True)
-dis_pretrain = int(True)
-MLE_train_epoch = 1 # 80
-ADV_train_epoch = 1 # 200
+gen_pretrain = int(False)
+dis_pretrain = int(False)
+MLE_train_epoch = 80
+ADV_train_epoch = 200
 tips = 'MaliGAN experiments'
 
 # ===Oracle  or Real===
@@ -48,42 +48,45 @@ tips = 'MaliGAN experiments'
 # vocab_size = [5000, 0, 0]
 
 if_real_data = [int(True)]
-dataset = ['vox_tweets']
+dataset = ['podemos_tweets']
 vocab_size = [0]
+
+if_checkpoints = int(True)
+checkpoints_path = 'save/20240709/podemos_tweets/maligan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl174_temp1_lfd0.0_T0709_1858_24/models'
 
 # ===Basic Param===
 data_shuffle = int(False)
 model_type = 'vanilla'
 gen_init = 'normal'
 dis_init = 'uniform'
-samples_num = 10  # Reducido de 10000
-batch_size = 16  # Reducido de 64 para evitar problemas de memoria
+samples_num = 10000  # Reducido de 10000
+batch_size = 64  # Reducido de 64 para evitar problemas de memoria
 max_seq_len = 20
 gen_lr = 0.01
 dis_lr = 1e-4
-pre_log_step = 1  # Reducido de 10
+pre_log_step = 10  # Reducido de 10
 adv_log_step = 1
 
 # ===Generator===
-ADV_g_step = [1, 1, 1]  # Reducido de [50, 1, 1]
-rollout_num = 4  # Reducido de 16
-gen_embed_dim = 16  # Reducido de 32 
-gen_hidden_dim = 16  # Reducido de 32
+ADV_g_step = [50, 1, 1]  # Reducido de [50, 1, 1]
+rollout_num = 16
+gen_embed_dim = 32
+gen_hidden_dim = 32
 
 # ===Discriminator===
-d_step = 1  # Reducido de 4
-d_epoch = 1  # Reducido de 2
+d_step = 4  # Reducido de 4
+d_epoch = 2  # Reducido de 2
 ADV_d_step = 1
-ADV_d_epoch = 1  # Reducido de 3
-dis_embed_dim = 32  # Reducido de 64 
-dis_hidden_dim = 32  # Reducido de 64 
+ADV_d_epoch = 3
+dis_embed_dim = 64
+dis_hidden_dim = 64 
 # ===Metrics===
-use_nll_oracle = int(False) # int(True)
-use_nll_gen = int(False) # int(True)
-use_nll_div = int(False) # int(True)
-use_bleu = int(False) # int(True)
-use_self_bleu = int(False) # int(True)
-use_ppl = int(False) # int(False)
+use_nll_oracle = int(True)
+use_nll_gen = int(True)
+use_nll_div = int(True)
+use_bleu = int(True)
+use_self_bleu = int(True)
+use_ppl = int(False)
 
 args = [
     # Program
@@ -97,6 +100,10 @@ args = [
     '--mle_epoch', MLE_train_epoch,
     '--adv_epoch', ADV_train_epoch,
     '--tips', tips,
+    
+    # Checkpoints
+    '--if_checkpoints', if_checkpoints,
+    '--checkpoints_path', checkpoints_path,
 
     # Oracle or Real
     '--if_real_data', if_real_data[job_id],

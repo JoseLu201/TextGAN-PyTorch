@@ -25,7 +25,7 @@ class LeakGAN_G(nn.Module):
                  step_size, gpu=False):
         super(LeakGAN_G, self).__init__()
         self.name = 'leakgan'
-
+        
         self.hidden_dim = hidden_dim
         self.embedding_dim = embedding_dim
         self.max_seq_len = max_seq_len

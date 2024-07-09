@@ -38,9 +38,9 @@ scriptname = 'main.py'
 if_test = int(False)
 run_model = 'leakgan'
 CUDA = int(True)
-oracle_pretrain = int(True)
+oracle_pretrain = int(False)
 gen_pretrain = int(False)
-dis_pretrain = int(True)
+dis_pretrain = int(False)
 MLE_train_epoch = 1 # 8
 ADV_train_epoch = 5 # 200
 inter_epoch = 10
@@ -52,15 +52,19 @@ tips = 'LeakGAN experiments'
 # vocab_size = [5000, 0, 0]
 
 if_real_data = [int(True)]
-dataset = ['vox_tweets']
+dataset = ['pp_tweets']
 vocab_size = [0]
+
+if_checkpoints = int(False)
+checkpoints_path = './save/20240703/podemos_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl174_temp1_lfd0.0_T0703_1934_17/models' 
+
 
 # ===Basic Param===
 data_shuffle = int(False)
 model_type = 'vanilla'
 gen_init = 'normal'
 dis_init = 'uniform'
-samples_num = 10 # 10000
+samples_num = 4 # 10000
 batch_size = 4 # 64
 max_seq_len = 20
 gen_lr = 0.0015
@@ -105,6 +109,10 @@ args = [
     '--adv_epoch', ADV_train_epoch,
     '--inter_epoch', inter_epoch,
     '--tips', tips,
+    
+    # Checkpoints
+    '--if_checkpoints', if_checkpoints,
+    '--checkpoints_path', checkpoints_path,
 
     # Oracle or Real
     '--if_real_data', if_real_data[job_id],

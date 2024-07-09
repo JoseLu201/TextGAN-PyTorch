@@ -42,21 +42,24 @@ class LeakGANInstructor(BasicInstructor):
             self.log.info('>>> Interleaved Round %d...' % inter_num)
             self.sig.update()  # update signal
             if self.sig.pre_sig:
-                # ===DISCRIMINATOR PRE-TRAINING===
-                if not cfg.dis_pretrain:
-                    self.log.info('Starting Discriminator Training...')
-                    self.train_discriminator(cfg.d_step, cfg.d_epoch)
-                    if cfg.if_save and not cfg.if_test:
-                        torch.save(self.dis.state_dict(), cfg.pretrained_dis_path)
-                        print('Save pre-trained discriminator: {}'.format(cfg.pretrained_dis_path))
+                if not cfg.if_checkpoints:
+                    # ===DISCRIMINATOR PRE-TRAINING===
+                    if not cfg.dis_pretrain:
+                        self.log.info('Starting Discriminator Training...')
+                        self.train_discriminator(cfg.d_step, cfg.d_epoch)
+                        if cfg.if_save and not cfg.if_test:
+                            torch.save(self.dis.state_dict(), cfg.pretrained_dis_path)
+                            print('Save pre-trained discriminator: {}'.format(cfg.pretrained_dis_path))
 
-                # ===GENERATOR MLE TRAINING===
-                if not cfg.gen_pretrain:
-                    self.log.info('Starting Generator MLE Training...')
-                    self.pretrain_generator(cfg.MLE_train_epoch)
-                    if cfg.if_save and not cfg.if_test:
-                        torch.save(self.gen.state_dict(), cfg.pretrained_gen_path)
-                        print('Save pre-trained generator: {}'.format(cfg.pretrained_gen_path))
+                    # ===GENERATOR MLE TRAINING===
+                    if not cfg.gen_pretrain:
+                        self.log.info('Starting Generator MLE Training...')
+                        self.pretrain_generator(cfg.MLE_train_epoch)
+                        if cfg.if_save and not cfg.if_test:
+                            torch.save(self.gen.state_dict(), cfg.pretrained_gen_path)
+                            print('Save pre-trained generator: {}'.format(cfg.pretrained_gen_path))
+                else:
+                    self.log.info('>>> Loaded checkpoints...')
             else:
                 self.log.info('>>> Stop by pre_signal! Skip to adversarial training...')
                 break
@@ -65,7 +68,7 @@ class LeakGANInstructor(BasicInstructor):
         self.log.info('Starting Adversarial Training...')
         self.log.info('Initial generator: %s' % (str(self.cal_metrics(fmt_str=True))))
 
-        for adv_epoch in range(cfg.ADV_train_epoch):
+        for adv_epoch in range(self.checkpoint_epoch, cfg.ADV_train_epoch):
             self.log.info('-----\nADV EPOCH %d\n-----' % adv_epoch)
             self.sig.update()
             if self.sig.adv_sig:

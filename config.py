@@ -24,6 +24,10 @@ gen_pretrain = False
 dis_pretrain = False
 clas_pretrain = False
 
+#------------------- ADDED -------------------
+if_checkpoints = False
+checkpoints_path = './save/'
+
 run_model = 'seqgan'  # seqgan, leakgan, maligan, jsdgan, relgan, evogan, sentigan, catgan, dpgan, dgsan, cot
 k_label = 2  # num of labels, >=2
 gen_init = 'truncated_normal'  # normal, uniform, truncated_normal
@@ -198,7 +202,8 @@ def init_param(opt):
         pretrained_clas_path, n_parent, mu_type, eval_type, d_type, eval_b_num, lambda_fd, d_out_mean, \
         lambda_fq, freeze_dis, freeze_clas, use_all_real_fake, use_population, gen_init, dis_init, \
         multi_oracle_samples_path, k_label, cat_train_data, cat_test_data, evo_temp_step, devices, \
-        use_nll_oracle, use_nll_gen, use_nll_div, use_bleu, use_self_bleu, use_clas_acc, use_ppl
+        use_nll_oracle, use_nll_gen, use_nll_div, use_bleu, use_self_bleu, use_clas_acc, use_ppl, if_checkpoints, \
+        checkpoints_path
 
     if_test = True if opt.if_test == 1 else False
     run_model = opt.run_model
@@ -210,6 +215,10 @@ def init_param(opt):
     eval_type = opt.eval_type
     d_type = opt.d_type
     if_real_data = True if opt.if_real_data == 1 else False
+    
+    if_checkpoints = True if opt.if_checkpoints == 1 else False
+    checkpoints_path = opt.checkpoints_path
+    
     CUDA = True if opt.cuda == 1 else False
     device = opt.device
     devices = opt.devices

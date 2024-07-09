@@ -1,11 +1,12 @@
 {
     "version": "0.2.0",
     "configurations": [
+      
       {
         "name": "Python: (Subprocess)",  // Configuration name (descriptive)
         "type": "debugpy",                               // Type of launch (debugpy)
         "request": "launch",                             // Request type (launch)
-        "module": "run_leakgan",                      // **Key part:** Module to launch (without .py)
+        "module": "run_seqgan",                      // **Key part:** Module to launch (without .py)
         "args": [],                                       // Optional arguments to pass
         "subProcess": true,                              // Use subprocess for debugging
         "cwd": "${workspaceFolder}/run",                 // Working directory (project root)

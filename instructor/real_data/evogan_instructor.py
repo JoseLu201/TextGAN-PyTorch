@@ -54,15 +54,16 @@ class EvoGANInstructor(BasicInstructor):
         self.D_criterion = GANLoss(cfg.loss_type, 'D', cfg.d_type, CUDA=cfg.CUDA)
 
     def init_model(self):
-        if cfg.dis_pretrain:
-            self.log.info(
-                'Load pretrained discriminator: {}'.format(cfg.pretrained_dis_path))
-            self.dis.load_state_dict(torch.load(cfg.pretrained_dis_path, map_location='cuda:{}'.format(cfg.device)))
+        if not cfg.if_checkpoints:
+            if cfg.dis_pretrain:
+                self.log.info(
+                    'Load pretrained discriminator: {}'.format(cfg.pretrained_dis_path))
+                self.dis.load_state_dict(torch.load(cfg.pretrained_dis_path, map_location='cuda:{}'.format(cfg.device)))
 
-        if cfg.gen_pretrain:
-            for i in range(cfg.n_parent):
-                self.log.info('Load MLE pretrained generator gen: {}'.format(cfg.pretrained_gen_path + '%d' % i))
-                self.parents[i] = torch.load(cfg.pretrained_gen_path + '%d' % 0, map_location='cpu')
+            if cfg.gen_pretrain:
+                for i in range(cfg.n_parent):
+                    self.log.info('Load MLE pretrained generator gen: {}'.format(cfg.pretrained_gen_path + '%d' % i))
+                    self.parents[i] = torch.load(cfg.pretrained_gen_path + '%d' % 0, map_location='cpu')
 
         if cfg.CUDA:
             self.gen = self.gen.cuda()
@@ -81,19 +82,20 @@ class EvoGANInstructor(BasicInstructor):
 
     def _run(self):
         # ===PRE-TRAINING (GENERATOR)===
-        if not cfg.gen_pretrain:
-            for i, (parent, parent_opt) in enumerate(zip(self.parents, self.parent_mle_opts)):
-                self.log.info('Starting Generator-{} MLE Training...'.format(i))
-                self.load_gen(parent, parent_opt, mle=True)  # load state dict
-                self.pretrain_generator(cfg.MLE_train_epoch)
-                self.parents[i] = copy.deepcopy(self.gen.state_dict())  # save state dict
-                if cfg.if_save and not cfg.if_test:
-                    torch.save(self.gen.state_dict(), cfg.pretrained_gen_path + '%d' % i)
-                    self.log.info('Save pre-trained generator: {}'.format(cfg.pretrained_gen_path + '%d' % i))
+        if not cfg.if_checkpoints:
+            if not cfg.gen_pretrain:
+                for i, (parent, parent_opt) in enumerate(zip(self.parents, self.parent_mle_opts)):
+                    self.log.info('Starting Generator-{} MLE Training...'.format(i))
+                    self.load_gen(parent, parent_opt, mle=True)  # load state dict
+                    self.pretrain_generator(cfg.MLE_train_epoch)
+                    self.parents[i] = copy.deepcopy(self.gen.state_dict())  # save state dict
+                    if cfg.if_save and not cfg.if_test:
+                        torch.save(self.gen.state_dict(), cfg.pretrained_gen_path + '%d' % i)
+                        self.log.info('Save pre-trained generator: {}'.format(cfg.pretrained_gen_path + '%d' % i))
 
         # # ===ADVERSARIAL TRAINING===
         self.log.info('Starting Adversarial Training...')
-        progress = tqdm(range(cfg.ADV_train_epoch))
+        progress = tqdm(range(self.checkpoint_epoch, cfg.ADV_train_epoch))
         for adv_epoch in progress:
             if cfg.temperature == 1:
                 score, fit_score, select_mu = self.evolve_generator(cfg.ADV_g_step)

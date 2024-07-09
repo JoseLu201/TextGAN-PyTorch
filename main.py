@@ -69,6 +69,8 @@ def program_config(parser):
     parser.add_argument('--ora_pretrain', default=cfg.oracle_pretrain, type=int)
     parser.add_argument('--gen_pretrain', default=cfg.gen_pretrain, type=int)
     parser.add_argument('--dis_pretrain', default=cfg.dis_pretrain, type=int)
+    parser.add_argument('--if_checkpoints', default=cfg.if_checkpoints, type=int)
+    parser.add_argument('--checkpoints_path', default=cfg.checkpoints_path, type=str)
 
     # Generator
     parser.add_argument('--adv_g_step', default=cfg.ADV_g_step, type=int)

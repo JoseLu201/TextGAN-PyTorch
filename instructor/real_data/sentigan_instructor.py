@@ -41,17 +41,18 @@ class SentiGANInstructor(BasicInstructor):
         self.all_metrics.append(self.clas_acc)
 
     def init_model(self):
-        if cfg.dis_pretrain:
-            self.log.info(
-                'Load pretrained discriminator: {}'.format(cfg.pretrained_dis_path))
-            self.dis.load_state_dict(torch.load(cfg.pretrained_dis_path, map_location='cuda:{}'.format(cfg.device)))
-        if cfg.gen_pretrain:
-            for i in range(cfg.k_label):
-                self.log.info('Load MLE pretrained generator gen: {}'.format(cfg.pretrained_gen_path + '%d' % i))
-                self.gen_list[i].load_state_dict(
-                    torch.load(cfg.pretrained_gen_path + '%d' % i, map_location='cuda:{}'.format(cfg.device)))
-        if cfg.clas_pretrain:
-            self.log.info('Load  pretrained classifier: {}'.format(cfg.pretrained_clas_path))
+        if not cfg.if_checkpoints:
+            if cfg.dis_pretrain:
+                self.log.info(
+                    'Load pretrained discriminator: {}'.format(cfg.pretrained_dis_path))
+                self.dis.load_state_dict(torch.load(cfg.pretrained_dis_path, map_location='cuda:{}'.format(cfg.device)))
+            if cfg.gen_pretrain:
+                for i in range(cfg.k_label):
+                    self.log.info('Load MLE pretrained generator gen: {}'.format(cfg.pretrained_gen_path + '%d' % i))
+                    self.gen_list[i].load_state_dict(
+                        torch.load(cfg.pretrained_gen_path + '%d' % i, map_location='cuda:{}'.format(cfg.device)))
+            if cfg.clas_pretrain:
+                self.log.info('Load  pretrained classifier: {}'.format(cfg.pretrained_clas_path))
             self.clas.load_state_dict(torch.load(cfg.pretrained_clas_path, map_location='cuda:%d' % cfg.device))
 
         if cfg.CUDA:
@@ -62,32 +63,33 @@ class SentiGANInstructor(BasicInstructor):
 
     def _run(self):
         # ===Pre-train Classifier with real data===
-        if cfg.use_clas_acc:
-            self.log.info('Start training Classifier...')
-            self.train_classifier(cfg.PRE_clas_epoch)
+        if not cfg.if_checkpoints:
+            if cfg.use_clas_acc:
+                self.log.info('Start training Classifier...')
+                self.train_classifier(cfg.PRE_clas_epoch)
 
-        # ===PRE-TRAIN GENERATOR===
-        if not cfg.gen_pretrain:
-            self.log.info('Starting Generator MLE Training...')
-            self.pretrain_generator(cfg.MLE_train_epoch)
-            if cfg.if_save and not cfg.if_test:
-                for i in range(cfg.k_label):
-                    torch.save(self.gen_list[i].state_dict(), cfg.pretrained_gen_path + '%d' % i)
-                    print('Save pre-trained generator: {}'.format(cfg.pretrained_gen_path + '%d' % i))
+            # ===PRE-TRAIN GENERATOR===
+            if not cfg.gen_pretrain:
+                self.log.info('Starting Generator MLE Training...')
+                self.pretrain_generator(cfg.MLE_train_epoch)
+                if cfg.if_save and not cfg.if_test:
+                    for i in range(cfg.k_label):
+                        torch.save(self.gen_list[i].state_dict(), cfg.pretrained_gen_path + '%d' % i)
+                        print('Save pre-trained generator: {}'.format(cfg.pretrained_gen_path + '%d' % i))
 
-        # ===TRAIN DISCRIMINATOR====
-        if not cfg.dis_pretrain:
-            self.log.info('Starting Discriminator Training...')
-            self.train_discriminator(cfg.d_step, cfg.d_epoch)
-            if cfg.if_save and not cfg.if_test:
-                torch.save(self.dis.state_dict(), cfg.pretrained_dis_path)
-                print('Save pre-trained discriminator: {}'.format(cfg.pretrained_dis_path))
+            # ===TRAIN DISCRIMINATOR====
+            if not cfg.dis_pretrain:
+                self.log.info('Starting Discriminator Training...')
+                self.train_discriminator(cfg.d_step, cfg.d_epoch)
+                if cfg.if_save and not cfg.if_test:
+                    torch.save(self.dis.state_dict(), cfg.pretrained_dis_path)
+                    print('Save pre-trained discriminator: {}'.format(cfg.pretrained_dis_path))
 
         # ===ADVERSARIAL TRAINING===
         self.log.info('Starting Adversarial Training...')
         self.log.info('Initial generator: %s', self.comb_metrics(fmt_str=True))
 
-        for adv_epoch in range(cfg.ADV_train_epoch):
+        for adv_epoch in range(self.checkpoint_epoch, cfg.ADV_train_epoch):
             self.log.info('-----\nADV EPOCH %d\n-----' % adv_epoch)
             self.sig.update()
             if self.sig.adv_sig:

@@ -1,5 +1,6 @@
 import logging
 import sys
+import os
 from time import strftime, gmtime
 
 import numpy as np
@@ -166,3 +167,21 @@ def truncated_normal_(tensor, mean=0, std=1):
     tensor.data.copy_(tmp.gather(-1, ind).squeeze(-1))
     tensor.data.mul_(std).add_(mean)
     return tensor
+
+def path_ADV_checkpoints(model_dir):
+    print(os.getcwd())
+    files = [f for f in os.listdir(model_dir) if 'ADV' in f]
+    if not files:
+        raise FileNotFoundError('No ADV checkpoints found in {}'.format(model_dir))
+
+    # Find the highest epoch
+    max_epoch = max(int(f.split('_')[-1].split('.')[0]) for f in files)
+    paths = {}
+
+    for f in files:
+        epoch = int(f.split('_')[-1].split('.')[0])
+        if epoch == max_epoch:
+            model_type = f.split('_')[0]
+            if model_type in ['gen', 'dis', 'clas']:
+                paths[model_type] = os.path.join(model_dir, f)
+    return max_epoch, paths

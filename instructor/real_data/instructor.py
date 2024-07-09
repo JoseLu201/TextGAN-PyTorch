@@ -18,7 +18,7 @@ from metrics.nll import NLL
 from metrics.ppl import PPL
 from utils.cat_data_loader import CatClasDataIter
 from utils.data_loader import GenDataIter
-from utils.helpers import Signal, create_logger, get_fixed_temperature
+from utils.helpers import Signal, create_logger, get_fixed_temperature, path_ADV_checkpoints
 from utils.text_process import load_dict, write_tokens, tensor_to_tokens
 
 import traceback
@@ -36,6 +36,8 @@ class BasicInstructor:
 
         # load dictionary
         self.word2idx_dict, self.idx2word_dict = load_dict(cfg.dataset)
+        
+        self.checkpoint_epoch = 0
 
         # Dataloader
         try:
@@ -83,14 +85,26 @@ class BasicInstructor:
         pass
 
     def init_model(self):
-        if cfg.dis_pretrain:
-            self.log.info(
-                'Load pre-trained discriminator: {}'.format(cfg.pretrained_dis_path))
-            self.dis.load_state_dict(torch.load(cfg.pretrained_dis_path, map_location='cuda:{}'.format(cfg.device)))
-        if cfg.gen_pretrain:
-            self.log.info('Load MLE pre-trained generator: {}'.format(cfg.pretrained_gen_path))
-            self.gen.load_state_dict(torch.load(cfg.pretrained_gen_path, map_location='cuda:{}'.format(cfg.device)))
-
+        if cfg.if_checkpoints:
+            self.log.info('Load checkpoint...')
+            self.checkpoint_epoch, paths = path_ADV_checkpoints(cfg.checkpoints_path)
+            self.log.info('Checkpoint epoch: %d' % self.checkpoint_epoch)
+            
+            self.checkpoint_epoch += 1 # Start from the next epoch
+            self.log.info('Resume from epoch: %d' % self.checkpoint_epoch)
+            
+            
+            self.gen.load_state_dict(torch.load(paths['gen'], map_location='cuda:{}'.format(cfg.device)))
+            self.dis.load_state_dict(torch.load(paths['dis'], map_location='cuda:{}'.format(cfg.device)))
+        else:
+            if cfg.dis_pretrain:
+                self.log.info(
+                    'Load pre-trained discriminator: {}'.format(cfg.pretrained_dis_path))
+                self.dis.load_state_dict(torch.load(cfg.pretrained_dis_path, map_location='cuda:{}'.format(cfg.device)))
+            if cfg.gen_pretrain:
+                self.log.info('Load MLE pre-trained generator: {}'.format(cfg.pretrained_gen_path))
+                self.gen.load_state_dict(torch.load(cfg.pretrained_gen_path, map_location='cuda:{}'.format(cfg.device)))
+        
         if cfg.CUDA:
             self.gen = self.gen.cuda()
             self.dis = self.dis.cuda()
@@ -114,6 +128,7 @@ class BasicInstructor:
         total_acc = 0
         total_num = 0
         for i, data in enumerate(data_loader):
+            # print(f"{i} {len(data_loader)}")
             inp, target = data['input'], data['target']
             if cfg.CUDA:
                 inp, target = inp.cuda(), target.cuda()

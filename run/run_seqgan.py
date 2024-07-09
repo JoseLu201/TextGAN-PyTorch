@@ -24,7 +24,7 @@ elif len(sys.argv) > 1:
 else:
     job_id = 0
     gpu_id = 0
-    print('Missing argument: job_id and gpu_id. Use default job_id: {},     : {}'.format(job_id, gpu_id))
+    print('Missing argument: job_id and gpu_id. Use default job_id: {}, gpu_id: {}'.format(job_id, gpu_id))
 
 # Executables
 executable = 'python3'  # specify your own python interpreter path here
@@ -43,9 +43,11 @@ ADV_train_epoch = 200
 tips = 'SeqGAN experiments'
 
 if_real_data = [int(True)]
-dataset = ['ciudadanos_tweets']
+dataset = ['podemos_tweets']
 vocab_size = [0]
 
+if_checkpoints = int(False)
+checkpoints_path = './save/20240703/podemos_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl174_temp1_lfd0.0_T0703_1934_17/models' 
 
 # ===Basic Param===
 data_shuffle = int(False)
@@ -53,7 +55,7 @@ model_type = 'vanilla'
 gen_init = 'normal'
 dis_init = 'uniform'
 samples_num =  10000
-batch_size = 32
+batch_size = 64
 max_seq_len = 20
 gen_lr = 0.01
 dis_lr = 1e-4
@@ -67,8 +69,8 @@ gen_embed_dim = 32
 gen_hidden_dim = 32
 
 # ===Discriminator===
-d_step = 5
-d_epoch = 3
+d_step = 1
+d_epoch = 1
 ADV_d_step = 4
 ADV_d_epoch = 2
 dis_embed_dim = 64
@@ -94,6 +96,10 @@ args = [
     '--mle_epoch', MLE_train_epoch,
     '--adv_epoch', ADV_train_epoch,
     '--tips', tips,
+    
+    # Checkpoints
+    '--if_checkpoints', if_checkpoints,
+    '--checkpoints_path', checkpoints_path,
 
     # Oracle or Real
     '--if_real_data', if_real_data[job_id],

@@ -38,18 +38,19 @@ class CoTInstructor(BasicInstructor):
 
     def _run(self):
         # ===PRE-TRAINING===
-        # TRAIN GENERATOR
-        if not cfg.gen_pretrain:
-            self.log.info('Starting Generator MLE Training...')
-            self.pretrain_generator(cfg.MLE_train_epoch)
-            if cfg.if_save and not cfg.if_test:
-                torch.save(self.gen.state_dict(), cfg.pretrained_gen_path)
-                print('Save pre-trained generator: {}'.format(cfg.pretrained_gen_path))
+        # TRAIN GENERATOR4
+        if not cfg.if_checkpoints:
+            if not cfg.gen_pretrain:
+                self.log.info('Starting Generator MLE Training...')
+                self.pretrain_generator(cfg.MLE_train_epoch)
+                if cfg.if_save and not cfg.if_test:
+                    torch.save(self.gen.state_dict(), cfg.pretrained_gen_path)
+                    print('Save pre-trained generator: {}'.format(cfg.pretrained_gen_path))
 
         # ===ADVERSARIAL TRAINING===
         self.log.info('Starting Adversarial Training...')
 
-        progress = tqdm(range(cfg.ADV_train_epoch))
+        progress = tqdm(range(self.checkpoint_epoch, cfg.ADV_train_epoch))
         for epoch in progress:
             g_loss = self.adv_train_generator(cfg.ADV_g_step)  # Generator
             d_loss = self.train_mediator(epoch, cfg.ADV_d_step)  # Discriminator
