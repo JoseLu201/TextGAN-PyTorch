@@ -2,6 +2,18 @@ from sklearn.model_selection import train_test_split
 import os
 import shutil
 
+'''
+Este script divide los datos en conjuntos de entrenamiento y prueba
+Entrada:
+    - Nombre del partido político
+    - Directorio donde se volcaran los datos
+
+Se modicicara las carpetas creadas en gen_dataset.py añadiendo una carpeta 'test' con los datos de prueba y un archivo por 
+ejemplo pp_tweets_test.txt con los datos de train.
+
+Una vez separados los datos, se copiarán en la carpeta dataset para que puedan ser utilizados por el modelo.
+'''
+
 # Nombre del partido político
 partido = "pp"
 dir = "partidos_final"
@@ -23,7 +35,7 @@ test_file = f"test/{partido}_tweets_test.txt"
 
 try:
     os.makedirs(os.path.join(PATH, 'test'), exist_ok=True)
-    percent = 10
+    percent = 1
     # os.makedirs(f"{PATH}/test")
     # Guardar los datos de entrenamiento en un archivo
     with open(os.path.join(PATH, train_file), 'w') as file:

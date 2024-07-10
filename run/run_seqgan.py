@@ -43,7 +43,7 @@ ADV_train_epoch = 200
 tips = 'SeqGAN experiments'
 
 if_real_data = [int(True)]
-dataset = ['podemos_tweets']
+dataset = ['pp_tweets']
 vocab_size = [0]
 
 if_checkpoints = int(False)
@@ -55,7 +55,7 @@ model_type = 'vanilla'
 gen_init = 'normal'
 dis_init = 'uniform'
 samples_num =  10000
-batch_size = 64
+batch_size = 128
 max_seq_len = 20
 gen_lr = 0.01
 dis_lr = 1e-4

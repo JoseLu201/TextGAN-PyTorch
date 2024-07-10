@@ -8,6 +8,11 @@ from nltk.corpus import stopwords
 import nltk
 import re
 
+'''
+Este fichero crea el dataset procesado a partir de los datos en crudo
+Se limpian los tweets y se guardan en carpetas por partido político
+En cada carpeta se guarda un archivo CSV con los datos originales y otro con los datos limpios en formato texto
+'''
 
 # def sanitize_tweet(tweet):
 #     p.set_options(p.OPT.URL, p.OPT.MENTION, p.OPT.EMOJI)
@@ -50,7 +55,6 @@ if __name__ == "__main__":
     new_folder_name = 'partidos_final'
     for i in tqdm(range(df.shape[0])):
         # Limpiamos el tweet con tweet-preprocessor y lo pasamos a minúsculas
-        # cleaned_tweet = p.clean(unidecode.unidecode(df.iloc[i]['tweet'].lower()))
         df.loc[i, 'clean_tweet'] = sanitize_tweet(df.loc[i, 'tweet'])
 
     # Crear una carpeta para cada partido y guardar los datos
