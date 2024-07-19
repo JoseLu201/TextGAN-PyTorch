@@ -52,13 +52,18 @@ def get_log_data(filename):
 
 
 if __name__ == '__main__':
-    log_file_root = '../log/'
+    # log_file_root = '../log/'
+    log_file_root = '../'
     # Custom your log files in lists, no more than len(color_list)
-    log_file_list = ['log_0329_1639_16']
-    legend_text = ['SeqGAN', 'LeakGAN', 'RelGAN']
+    
+    log_file_list = ['logtest'] 
+    # legend_text = ['SeqGAN', 'LeakGAN', 'RelGAN']
+    
+    data = 'gen_work_loss'
+    legend_text = [data]
 
     color_id = 0
-    data_name = 'NLL_oracle'
+    data_name = data
     if_save = False
     # legend_text = log_file_list
 
@@ -77,4 +82,4 @@ if __name__ == '__main__':
 
     plt.legend()
     plt.show()
-    plt.savefig('./saved.pdf')
+    plt.savefig(f'../saved_{data_name}.pdf')
