@@ -35,11 +35,11 @@ scriptname = 'main.py'
 if_test = int(False)
 run_model = 'cot'
 CUDA = int(True)
-oracle_pretrain = int(False)
+oracle_pretrain = int(True)
 gen_pretrain = int(False)
 dis_pretrain = int(False)
 MLE_train_epoch = 0
-ADV_train_epoch = 1 # 20000
+ADV_train_epoch = 20000
 tips = 'CoT experiments'
 
 # ===Oracle  or Real===
@@ -76,12 +76,12 @@ gen_hidden_dim = 32
 ADV_d_step = 1
 
 # ===Metrics===
-use_nll_oracle = int(False) # int(True)
-use_nll_gen = int(False) # int(True)
-use_nll_div = int(False) # int(True)
-use_bleu = int(False) # int(True)
-use_self_bleu = int(False) # int(False)
-use_ppl = int(False) # int(False)
+use_nll_oracle = int(True)
+use_nll_gen = int(True)
+use_nll_div = int(True)
+use_bleu = int(True)
+use_self_bleu = int(False)
+use_ppl = int(False)
 
 args = [
     # Program

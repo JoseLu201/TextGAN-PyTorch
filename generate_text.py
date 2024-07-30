@@ -81,9 +81,9 @@ def idx_to_word(samples, idx2word_dict, padding_idx):
 if __name__ == "__main__":
     
     
-    data_path = 'save/20240701/ciudadanos_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl174_temp1_lfd0.0_T0701_0639_50'
+    data_path = 'save/20240727/psoe_tweets/cot_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl193_temp1_lfd0.0_T0727_2217_31'
     log_file_path = os.path.join(data_path, 'log.txt')
-    model_path = os.path.join(data_path, 'models', 'gen_MLE_00119.pt')
+    model_path = os.path.join(data_path, 'models', 'gen_ADV_training_06200.pt')
     
     params = parse_log_file(log_file_path)
     
@@ -98,20 +98,28 @@ if __name__ == "__main__":
     
     # load dictionary
     print("Loading dictionary... ", dataset)
-    word2idx_dict, idx2word_dict = load_dict(dataset)
-
+    try:
+        word2idx_dict, idx2word_dict = load_dict(dataset)
+    except FileNotFoundError:
+        print("Dictionary not found. Using default dictionary.")
+        raise FileNotFoundError("Dictionary not found.")
+    
     generator = load_generator(model_class, model_path, embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx, gpu)
     
     num_samples = 2
     batch_size = 2  # Tweets en paralelo que se obtendran
-    start_letter = ['RACISMO', 'CORRUPCIÓN']
+    start_letter = ['fdssad']
     
     
     start_letter = [sanitize_tweet(t) for t in start_letter]
     start_letter = get_tokenlized_words(start_letter)
     print("Start letter:", start_letter)
-    start_letter = [int(word2idx_dict.get(sl[0])) for sl in start_letter]
-    print("Start letter:", start_letter)
+    try:
+        start_letter = [int(word2idx_dict.get(sl[0])) for sl in start_letter]
+    except TypeError:
+        print("Start letter not found in dictionary. Using default start letter.")
+        start_letter = 1
+    print("Start letter token:", start_letter)
     
     samples = generate_tweets(generator, num_samples, batch_size, start_letter, gpu)
     

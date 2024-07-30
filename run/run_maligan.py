@@ -51,7 +51,7 @@ if_real_data = [int(True)]
 dataset = ['podemos_tweets']
 vocab_size = [0]
 
-if_checkpoints = int(True)
+if_checkpoints = int(False)
 checkpoints_path = 'save/20240709/podemos_tweets/maligan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl174_temp1_lfd0.0_T0709_1858_24/models'
 
 # ===Basic Param===

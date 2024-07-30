@@ -38,16 +38,16 @@ CUDA = int(True)
 oracle_pretrain = int(True)
 gen_pretrain = int(False)
 dis_pretrain = int(False)
-MLE_train_epoch = 1 # 120
-ADV_train_epoch = 1 # 200
+MLE_train_epoch = 120
+ADV_train_epoch = 200
 tips = 'DPGAN experiments'
 
 # ===Oracle  or Real===
 if_real_data = [int(True)]
-dataset = ['vox_tweets']
+dataset = ['podemos_tweets']
 vocab_size = [0]
 
-if_checkpoints = int(True)
+if_checkpoints = int(False)
 checkpoints_path = './save/20240703/podemos_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl174_temp1_lfd0.0_T0703_1934_17/models' 
 
 # ===Basic Param===
@@ -55,8 +55,8 @@ data_shuffle = int(False)
 model_type = 'vanilla'
 gen_init = 'normal'
 dis_init = 'uniform'
-samples_num = 10 # 10000
-batch_size = 16 # 64
+samples_num = 10000
+batch_size = 64
 max_seq_len = 20
 gen_lr = 0.01
 dis_lr = 0.01
@@ -70,20 +70,20 @@ gen_embed_dim = 32
 gen_hidden_dim = 32
 
 # ===Discriminator===
-d_step = 1 # 5
-d_epoch = 1 # 3
-ADV_d_step = 1 # 4
-ADV_d_epoch = 1 # 2
+d_step = 5
+d_epoch = 3
+ADV_d_step = 4
+ADV_d_epoch = 2
 dis_embed_dim = 64
 dis_hidden_dim = 64
 
 # ===Metrics===
-use_nll_oracle = int(False) # int(True)
-use_nll_gen = int(False) # int(True)
-use_nll_div = int(False) # int(True)
-use_bleu = int(False) # int(True)
-use_self_bleu = int(False) # int(False)
-use_ppl = int(False) # int(False)
+use_nll_oracle = int(True)
+use_nll_gen = int(True)
+use_nll_div = int(True)
+use_bleu = int(True)
+use_self_bleu = int(False)
+use_ppl = int(False)
 
 args = [
     # Program

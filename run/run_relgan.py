@@ -36,22 +36,22 @@ if_test = int(False)
 run_model = 'relgan'
 CUDA = int(True)
 oracle_pretrain = int(True)
-gen_pretrain = int(True)
+gen_pretrain = int(False)
 dis_pretrain = int(False)
-MLE_train_epoch = 1 # 150
-ADV_train_epoch = 1 # 3000
+MLE_train_epoch = 150
+ADV_train_epoch = 3000
 tips = 'RelGAN experiments'
 
 # ===Oracle or Real===
 if_real_data = [int(True)]
-dataset = ['vox_tweets']
+dataset = ['podemos_tweets']
 loss_type = 'rsgan'
 vocab_size = [0]
 temp_adpt = 'exp'
 temperature = [100]
 # temperature = [1, 100, 100]
 
-if_checkpoints = int(True)
+if_checkpoints = int(False)
 checkpoints_path = './save/20240703/podemos_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl174_temp1_lfd0.0_T0703_1934_17/models' 
 
 
@@ -61,8 +61,8 @@ data_shuffle = int(False)
 model_type = 'vanilla'
 gen_init = 'truncated_normal'
 dis_init = 'uniform'
-samples_num = 10 # 10000
-batch_size = 8 # 64
+samples_num = 10000
+batch_size =  64
 max_seq_len = 20
 gen_lr = 0.01
 gen_adv_lr = 1e-4
@@ -85,12 +85,12 @@ dis_hidden_dim = 64
 num_rep = 64
 
 # ===Metrics===
-use_nll_oracle = int(False) # int(True)
-use_nll_gen = int(False) # int(True)
-use_nll_div = int(False) # int(True)
-use_bleu = int(False) # int(True)
-use_self_bleu = int(False) # int(True)
-use_ppl = int(False) # int(False)
+use_nll_oracle = int(True)
+use_nll_gen = int(True)
+use_nll_div = int(True)
+use_bleu = int(True)
+use_self_bleu = int(True)
+use_ppl = int(False)
 
 args = [
     # Program

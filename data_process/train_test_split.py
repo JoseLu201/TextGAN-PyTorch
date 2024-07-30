@@ -15,7 +15,7 @@ Una vez separados los datos, se copiarán en la carpeta dataset para que puedan 
 '''
 
 # Nombre del partido político
-partido = "pp"
+partido = "psoe"
 dir = "partidos_final"
 PATH = f"{dir}/{partido}/"
 FILE = f"orig_{partido}_tweets.txt"

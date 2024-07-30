@@ -1,16 +1,25 @@
 {
     "version": "0.2.0",
     "configurations": [
-      
+      //CONFIG RUN DEBUG
+      // {
+      //   "name": "Python: (Subprocess)",  // Configuration name (descriptive)
+      //   "type": "debugpy",                               // Type of launch (debugpy)
+      //   "request": "launch",                             // Request type (launch)
+      //   "module": "run_seqgan",                      // **Key part:** Module to launch (without .py)
+      //   "args": [],                                       // Optional arguments to pass
+      //   "subProcess": true,                              // Use subprocess for debugging
+      //   "cwd": "${workspaceFolder}/run",                 // Working directory (project root)
+      //   "console": "integratedTerminal"                   // Optional: Launch output in terminal
+      // }
       {
-        "name": "Python: (Subprocess)",  // Configuration name (descriptive)
-        "type": "debugpy",                               // Type of launch (debugpy)
-        "request": "launch",                             // Request type (launch)
-        "module": "run_seqgan",                      // **Key part:** Module to launch (without .py)
-        "args": [],                                       // Optional arguments to pass
-        "subProcess": true,                              // Use subprocess for debugging
-        "cwd": "${workspaceFolder}/run",                 // Working directory (project root)
-        "console": "integratedTerminal"                   // Optional: Launch output in terminal
+        "name": "Python: (Subprocess)",
+        "type": "debugpy",
+        "request": "launch",
+        "module": "visualization",
+        "args": [],
+        "console": "integratedTerminal",
+        "cwd": "${workspaceFolder}/utils"
       }
     ]
   }
