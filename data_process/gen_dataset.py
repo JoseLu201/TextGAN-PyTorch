@@ -14,26 +14,6 @@ Se limpian los tweets y se guardan en carpetas por partido político
 En cada carpeta se guarda un archivo CSV con los datos originales y otro con los datos limpios en formato texto
 '''
 
-# def sanitize_tweet(tweet):
-#     p.set_options(p.OPT.URL, p.OPT.MENTION, p.OPT.EMOJI)
-
-#     STOPWORDS = set(stopwords.words('spanish'))
-#     # Define las opciones de tokenización
-    
-#     # Limpieza adicional de caracteres especiales
-#     # tweet = ''.join(e for e in tweet if e.isalnum() or e.isspace())
-#     # # Eliminar stopwords
-#     # # tweet = ' '.join([word for word in tweet.split() if word.lower() not in STOPWORDS])
-#     # # Lematización (opcional)
-#     # # tweet = ' '.join([nltk.WordNetLemmatizer().lemmatize(word) for word in tweet.split()])
-#     # return tweet
-#     tweet = tweet.lower()
-    
-#     tweet = unidecode.unidecode(tweet)
-#     tweet = p.tokenize(tweet)
-#     # Limpieza adicional de caracteres especiales
-#     tweet = ''.join(e for e in tweet if e.isalnum() or e.isspace() or e in ['.', ',', '!', '?', '¿', '¡', ':', ';', '(', ')', '[', ']', '{', '}', '"', "'", '-', '_', '$'])
-#     return tweet
 
 def sanitize_tweet(tweet):
     p.set_options(p.OPT.URL, p.OPT.MENTION, p.OPT.EMOJI)
