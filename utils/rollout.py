@@ -29,6 +29,10 @@ class ROLLOUT:
         :param given_num:
         :return:
         """
+        print("Sentences: ", sentences)
+        print("Sentences: ", sentences.size())
+        print("Given_num: ", given_num)
+        
         batch_size = sentences.size(0)
 
         # get current state

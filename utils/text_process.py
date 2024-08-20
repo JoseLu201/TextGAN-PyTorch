@@ -153,7 +153,11 @@ def tokens_to_tensor(tokens, dictionary):
         for i, word in enumerate(sent):
             if word == cfg.padding_token:
                 break
-            sent_ten.append(int(dictionary[str(word)]))
+            try:
+                sent_ten.append(int(dictionary[str(word)]))
+            except KeyError:
+                print("Word not in dictionary: %s" % word)
+                raise KeyError("Word not in dictionary: %s" % word)
         while i < cfg.max_seq_len - 1:
             sent_ten.append(cfg.padding_idx)
             i += 1

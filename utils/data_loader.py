@@ -39,6 +39,10 @@ class GenDataIter:
             dataset=GANDataset(self.__read_data__(samples)),
             batch_size=self.batch_size,
             shuffle=self.shuffle,
+            
+            # num_workers=4,
+            # pin_memory=True,
+            
             drop_last=True)
 
         self.input = self._all_data_('input')
@@ -78,7 +82,12 @@ class GenDataIter:
         if gpu:
             return inp.cuda(), target.cuda()
         return inp, target
-
+    
+    '''
+    carga todos los datos de un archivo y el tensor tendra el tamaño de numero de lineas del archivo 
+    y cada linea como el max_seq_len indicado, por ejemplo
+    Tensor:  torch.Size([36384, 60])
+    '''
     def load_data(self, filename):
         """Load real data from local file"""
         self.tokens = get_tokenlized(filename)
@@ -98,6 +107,10 @@ class DisDataIter:
             dataset=GANDataset(self.__read_data__(pos_samples, neg_samples)),
             batch_size=self.batch_size,
             shuffle=self.shuffle,
+            
+            # num_workers=4,
+            # pin_memory=True,
+            
             drop_last=True)
 
     def __read_data__(self, pos_samples, neg_samples):

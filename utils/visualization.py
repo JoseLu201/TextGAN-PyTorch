@@ -10,6 +10,17 @@
 import matplotlib.pyplot as plt
 import re
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 title_dict = {
     'gen_pre_loss': 'pre_loss',
     'gen_adv_loss': 'g_loss',
@@ -33,6 +44,7 @@ def plt_data(data, step, title, c_id, savefig=False):
     x_label = 'Epoch'
     y_label = 'loss'
     plt.plot(x, data, label=title)
+    # plt.ylim(0, 1000)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.legend()
@@ -78,13 +90,13 @@ def process_log_line(line, regex_key='BLEU'):
 
 
 if __name__ == '__main__':
-    # log_file_root = '../log/'
-    log_file_root = '../'
+    log_file_root = '../log/'
+    # log_file_root = '../'
     # Custom your log files in lists, no more than len(color_list)
     
     # log_file_list = ['dpgan_log'] 
-    log_file_list = ['mali_log']
-    
+    # log_file_list = ['save/20240809/pp_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl60_temp1_lfd0.0_T0809_1310_21/log']
+    log_file_list = ['seqgan_log_01']
     
     # legend_text = ['SeqGAN', 'LeakGAN', 'RelGAN']
 
@@ -104,7 +116,9 @@ if __name__ == '__main__':
         
         if all_data[title_dict[item]] != []:
             plt_data(all_data[title_dict[item]], len(all_data[title_dict[item]]),
-                    "Mali_"+item, color_id, if_save)
+                    "01_TestSEQ_"+item, color_id, if_save)
+            print(f"Max {bcolors.OKBLUE + item + bcolors.ENDC}: {max(all_data[title_dict[item]])} --- Epoch: {all_data[title_dict[item]].index(max(all_data[title_dict[item]]))}")
+            print(f"Min {item}: {min(all_data[title_dict[item]])} --- Epoch: {all_data[title_dict[item]].index(min(all_data[title_dict[item]]))}")
         # color_id += 1
 
         plt.legend()
