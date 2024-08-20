@@ -2,6 +2,8 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 
+from utils.data_loader import get_tokenlized_words
+
 path = '/home/joselu/TFG/TextGAN-PyTorch/data_process/partidos_final'
 
 
@@ -39,8 +41,14 @@ for file_path in all_files:
             your_tweets.append(line.strip())
 
 
+print(len(your_tweets))
+print(type(your_tweets))
+print(your_tweets[:5])
+
+your_tweets = get_tokenlized_words(your_tweets)
 # Example list of tweet lengths in tokens
-tweet_lengths = [len(tweet.split()) for tweet in your_tweets]
+# print(your_tweets[:5])
+tweet_lengths = [len(tweet) for tweet in your_tweets]
 
 
 # Calculate statistics
