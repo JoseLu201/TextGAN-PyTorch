@@ -9,7 +9,7 @@
 #     - save/20240423/pp_tweets/maligan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl44_temp1_lfd0.0_T0423_1638_38/models/gen_MLE_00079.pt: the pre-trained model
 
 
-
+import json
 import torch
 from models.generator import LSTMGenerator
 from models.SeqGAN_G import SeqGAN_G
@@ -23,7 +23,7 @@ from models.CoT_G import CoT_G
 from models.SentiGAN_G import SentiGAN_G
 from models.CatGAN_G import CatGAN_G
 from data_process.gen_dataset import sanitize_tweet
-from utils.text_process import load_dict
+from utils.text_process import load_dict, tensor_to_tokens
 from utils.data_loader import get_tokenlized_words
 import os
 
@@ -43,8 +43,7 @@ def parse_log_file(log_file_path):
                 params[key] = value
     return params
 
-def load_generator(model_class, model_path, embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx, gpu=False):
-    
+def load_generator(model_class, model_path, embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx,device, gpu=False):
     models_dict = {
         '' : LSTMGenerator,
         'seqgan': SeqGAN_G,
@@ -60,32 +59,110 @@ def load_generator(model_class, model_path, embedding_dim, hidden_dim, vocab_siz
     }
 
     generator = models_dict[model_class](embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx, gpu)
-    generator.load_state_dict(torch.load(model_path))
+    generator.load_state_dict(torch.load(model_path,map_location='cuda:{}'.format(device)))
+
     if gpu:
         generator = generator.cuda()
     generator.eval()
     return generator
 
-def generate_tweets(generator, num_samples, batch_size, start_letter, gpu=False):
-    samples = generator.sample(num_samples, batch_size, start_letter)
-    return samples
+def generate_tweets(generator, num_samples, batch_size, idx2word_dict, start_letter):
+    tweets = ""
+    with torch.no_grad():
+        generator.init_hidden(batch_size)
+        samples = generator.sample(num_samples, batch_size, start_letter)
+        # samples = generator.sample_and_plot(num_samples, batch_size, start_letter)
+        
+        tokens = tensor_to_tokens(samples, idx2word_dict)
+        
+        for sent in tokens:
+                tweets+=(' '.join(sent))
+                tweets+=('\n\n')
+    return tweets
 
-def idx_to_word(samples, idx2word_dict, padding_idx):
-    texts = []
-    for sample in samples:
-        text = ' '.join([idx2word_dict.get(f'{idx.item()}', '1') for idx in sample if idx.item() != padding_idx])
-        texts.append(text)
-    return texts
 
+def get_current_path():
+    return os.path.dirname(os.path.abspath(__file__))
 
-if __name__ == "__main__":
+#OBLIGATIOR LLAMARME PORQUE SINO NO FUNCIONA
+def CHANGE_CURRENT_DIR_MUST():
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
     
+
+def list_available_politicians():
+    save_folder = './save'
+    politicians = []
+    for date_folder in os.listdir(save_folder):
+        date_folder_path = os.path.join(save_folder, date_folder)
+        if os.path.isdir(date_folder_path):
+            for party_folder in os.listdir(date_folder_path):
+                party_folder_path = os.path.join(date_folder_path, party_folder)
+                if os.path.isdir(party_folder_path):
+                    politician = party_folder.split('_')[0]
+                    if politician not in politicians:
+                        politicians.append(politician)
+    return politicians
+
+def available_models_partido(politician):
+    save_folder = './save'
+    models_info = []
+    for date_folder in os.listdir(save_folder):
+        date_folder_path = os.path.join(save_folder, date_folder)
+        if os.path.isdir(date_folder_path):
+            for party_folder in os.listdir(date_folder_path):
+                party_folder_path = os.path.join(date_folder_path, party_folder)
+                if os.path.isdir(party_folder_path):
+                    current_politician = party_folder.split('_')[0]
+                    if current_politician == politician:
+                        for model_folder in os.listdir(party_folder_path):
+                            model_folder_path = os.path.join(party_folder_path, model_folder)
+                            if os.path.isdir(model_folder_path):
+                                models_subfolder_path = os.path.join(model_folder_path, 'models')
+                                gen_models = []
+                                dis_models = []
+                                if os.path.isdir(models_subfolder_path):
+                                    for model_file in os.listdir(models_subfolder_path):
+                                        model_file_path = os.path.join(models_subfolder_path, model_file)
+                                        if os.path.isfile(model_file_path):
+                                            if 'gen' in model_file:
+                                                gen_models.append(model_file)
+                                            elif 'dis' in model_file:
+                                                dis_models.append(model_file)
+                                models_info.append({
+                                    "model_name": model_folder,
+                                    "model_path": model_folder_path,
+                                    "gen_models": gen_models,
+                                    "dis_models": dis_models
+                                })
+    return models_info
+
+def get_all_data_json():
+    partidos_politicos = list_available_politicians()
+    data = {"partidos": []}
     
-    data_path = 'save/20240727/psoe_tweets/cot_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl193_temp1_lfd0.0_T0727_2217_31'
-    log_file_path = os.path.join(data_path, 'log.txt')
-    model_path = os.path.join(data_path, 'models', 'gen_ADV_training_06200.pt')
+    for partido in partidos_politicos:
+        modelos = available_models_partido(partido)
+        data["partidos"].append({
+            "nombre": partido,
+            "modelos": modelos
+        })
+    
+    return data
+
+def main(load_model_path,gen_model, word = 'BOS'):
+    # os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    print(os.path.dirname(os.path.abspath(__file__)))
+    # data_path = './save/20240711/pp_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl153_temp1_lfd0.0_T0711_1010_57/'
+    # data_path = f'./save/20240711/{partido}_tweets/{model}/'
+    
+    log_file_path = os.path.join(load_model_path, 'log.txt')
+    if not os.path.exists(log_file_path):
+        raise FileNotFoundError("Log file not found.", get_current_path())
+    model_path = os.path.join(load_model_path, 'models', gen_model)
     
     params = parse_log_file(log_file_path)
+    
+    # print(params)
     
     model_class = params['run_model'] 
     embedding_dim = int(params['gen_embed_dim'])
@@ -94,6 +171,7 @@ if __name__ == "__main__":
     max_seq_len = int(params['max_seq_len'])
     padding_idx = int(params['padding_idx'])
     gpu = int(params['cuda'])
+    device = int(params['device'])
     dataset = params['dataset']
     
     # load dictionary
@@ -104,14 +182,14 @@ if __name__ == "__main__":
         print("Dictionary not found. Using default dictionary.")
         raise FileNotFoundError("Dictionary not found.")
     
-    generator = load_generator(model_class, model_path, embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx, gpu)
+    generator = load_generator(model_class, model_path, embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx,device ,gpu)
     
-    num_samples = 2
-    batch_size = 2  # Tweets en paralelo que se obtendran
-    start_letter = ['fdssad']
+    num_samples = 1
+    batch_size = 1  # Tweets en paralelo que se obtendran
+    start_letter = [f'{word}']
     
     
-    start_letter = [sanitize_tweet(t) for t in start_letter]
+    # start_letter = [sanitize_tweet(t) for t in start_letter]
     start_letter = get_tokenlized_words(start_letter)
     print("Start letter:", start_letter)
     try:
@@ -121,9 +199,19 @@ if __name__ == "__main__":
         start_letter = 1
     print("Start letter token:", start_letter)
     
-    samples = generate_tweets(generator, num_samples, batch_size, start_letter, gpu)
-    
-    tweets = idx_to_word(samples, idx2word_dict, padding_idx) 
+    tweets = generate_tweets(generator, num_samples, batch_size,idx2word_dict, start_letter)
 
-    for i, tweet in enumerate(tweets):
-        print(f"Tweet {i+1}: {tweet}")
+    return tweets
+
+if __name__ == "__main__":
+    pol = list_available_politicians()
+    print(pol)
+    models = available_models_partido(pol[0])
+    print(models)
+    # tweets = main()
+    
+    data = get_all_data_json()
+    print(json.dumps(data, indent=4))
+
+    # for i, tweet in enumerate(tweets):
+    #     print(f"Tweet {i+1}: {tweet}")
