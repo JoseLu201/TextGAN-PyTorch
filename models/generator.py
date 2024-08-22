@@ -15,6 +15,7 @@ import torch.nn as nn
 
 import config as cfg
 from utils.helpers import truncated_normal_
+import matplotlib.pyplot as plt
 
 import pdb
 torch.autograd.set_detect_anomaly(True)
@@ -57,7 +58,7 @@ class LSTMGenerator(nn.Module):
         out = out.contiguous().view(-1, self.hidden_dim)  # out: (batch_size * len) * hidden_dim
         out = self.lstm2out(out)  # (batch_size * seq_len) * vocab_size
         # out = self.temperature * out  # temperature
-        pred = self.softmax(out)
+        pred = self.softmax(out)     
             
         if need_hidden:
             return pred, hidden
@@ -112,3 +113,58 @@ class LSTMGenerator(nn.Module):
             return h.cuda(), c.cuda()
         else:
             return h, c
+
+
+    def sample_and_plot(self, num_samples, batch_size, start_letter=cfg.start_letter):
+        """
+        Samples the network and returns num_samples samples of length max_seq_len.
+        Also, plots the probability distribution for one of the sequences generated.
+        """
+        num_batch = num_samples // batch_size + 1 if num_samples != batch_size else 1
+        samples = torch.zeros(num_batch * batch_size, self.max_seq_len).long()
+
+        # Para almacenar las distribuciones de probabilidades para una secuencia específica
+        probability_distributions = []
+
+        # Generate sentences with multinomial sampling 
+        for b in range(num_batch):
+            hidden = self.init_hidden(batch_size)
+            inp = torch.LongTensor([start_letter] * batch_size)
+            if self.gpu:
+                inp = inp.cuda()
+            for i in range(self.max_seq_len):
+                out, hidden = self.forward(inp, hidden, need_hidden=True)  # out: batch_size * vocab_size
+                
+                # Convertir logits a probabilidades
+                probabilities = torch.exp(out)  # Convertir los logits a probabilidades
+                probability_distributions.append(probabilities[0].cpu().detach().numpy())  # Almacenar la distribución de la primera secuencia
+                
+                # Realizar el muestreo multinomial
+                next_token = torch.multinomial(probabilities, 1)  # batch_size * 1 (sampling from each row)
+                samples[b * batch_size:(b + 1) * batch_size, i] = next_token.view(-1)
+                inp = next_token.view(-1)
+        
+        samples = samples[:num_samples]
+        print("Sampling ", samples)
+        self.save_probability_distributions(probability_distributions)
+
+        return samples
+
+
+    def save_probability_distributions(self, probability_distributions, output_dir='borrar'):
+        """
+        Saves the probability distributions over the vocabulary for each step in the sequence as separate images.
+        """
+            
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        for i, probs in enumerate(probability_distributions):
+            plt.figure(figsize=(10, 4))
+            plt.plot(probs)
+            plt.title(f'Step {i+1}')
+            plt.xlabel('Vocabulary Index')
+            plt.ylabel('Probability')
+            plt.ylim(0, max(probs))
+
+            plt.savefig(os.path.join(output_dir, f'probability_step_{i+1}.png'))
+            plt.close()

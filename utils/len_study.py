@@ -4,18 +4,12 @@ import matplotlib.pyplot as plt
 
 from utils.data_loader import get_tokenlized_words
 
-path = '/home/joselu/TFG/TextGAN-PyTorch/data_process/partidos_final'
+
 
 
 def get_file_paths(root_dir):
     """
     Recursively iterates through a directory tree and returns a list of absolute file paths.
-
-    Args:
-        root_dir: The root directory to start the search from.
-
-    Returns:
-        A list of absolute file paths.
     """
 
     file_paths = []
@@ -28,9 +22,7 @@ def get_file_paths(root_dir):
 
     return file_paths
 
-
-# Example usage:
-
+path = '/home/joselu/TFG/TextGAN-PyTorch/data_process/partidos_final'
 all_files = get_file_paths(path)
 
 your_tweets = []
@@ -79,7 +71,7 @@ plt.title('Distribución de la Longitud de los Tweets', fontsize=14, fontweight=
 plt.grid(True, linestyle='--', alpha=0.7)
 
 # Save the figure with high quality (optional)
-plt.savefig('histograma.png', dpi=300)
+plt.savefig('./savefig/histograma.png', dpi=300)
 
 # Display the plot
 plt.show()
