@@ -1,0 +1,334 @@
+====================================================================================================
+> training arguments:
+>>> if_test: 0
+>>> run_model: seqgan
+>>> k_label: 2
+>>> dataset: pp_tweets
+>>> model_type: vanilla
+>>> loss_type: rsgan
+>>> mu_type: ragan
+>>> eval_type: Ra
+>>> d_type: Ra
+>>> if_real_data: 1
+>>> cuda: 1
+>>> device: 0
+>>> devices: [0, 1]
+>>> shuffle: 0
+>>> gen_init: normal
+>>> dis_init: uniform
+>>> n_parent: 1
+>>> eval_b_num: 8
+>>> lambda_fq: 1.0
+>>> lambda_fd: 0.0
+>>> d_out_mean: True
+>>> freeze_dis: False
+>>> freeze_clas: False
+>>> use_all_real_fake: False
+>>> use_population: False
+>>> samples_num: 10000
+>>> vocab_size: 41285
+>>> mle_epoch: 120
+>>> clas_pre_epoch: 10
+>>> adv_epoch: 200
+>>> inter_epoch: 15
+>>> batch_size: 128
+>>> max_seq_len: 60
+>>> start_letter: 1
+>>> padding_idx: 0
+>>> gen_lr: 0.01
+>>> gen_adv_lr: 0.0001
+>>> dis_lr: 0.0001
+>>> clip_norm: 5.0
+>>> pre_log_step: 10
+>>> adv_log_step: 1
+>>> train_data: dataset/pp_tweets.txt
+>>> test_data: dataset/testdata/pp_tweets_test.txt
+>>> temp_adpt: exp
+>>> evo_temp_step: 1
+>>> temperature: 1
+>>> ora_pretrain: 1
+>>> gen_pretrain: 0
+>>> dis_pretrain: 0
+>>> if_checkpoints: 0
+>>> checkpoints_path: ./save/20240710/pp_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl153_temp1_lfd0.0_T0710_1515_21/models
+>>> adv_g_step: 1
+>>> rollout_num: 16
+>>> gen_embed_dim: 32
+>>> gen_hidden_dim: 32
+>>> goal_size: 16
+>>> step_size: 4
+>>> mem_slots: 1
+>>> num_heads: 2
+>>> head_size: 256
+>>> d_step: 1
+>>> d_epoch: 1
+>>> adv_d_step: 4
+>>> adv_d_epoch: 2
+>>> dis_embed_dim: 64
+>>> dis_hidden_dim: 64
+>>> num_rep: 64
+>>> use_nll_oracle: 1
+>>> use_nll_gen: 1
+>>> use_nll_div: 1
+>>> use_bleu: 1
+>>> use_self_bleu: 1
+>>> use_clas_acc: True
+>>> use_ppl: 0
+>>> log_file: log/log_0809_1310_21.txt
+>>> save_root: save/20240809/pp_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl60_temp1_lfd0.0_T0809_1310_21/
+>>> signal_file: run_signal.txt
+>>> tips: SeqGAN experiments
+====================================================================================================
+Starting Generator MLE Training...
+[MLE-GEN] epoch 0 : pre_loss = 4.6898, BLEU-[2, 3, 4, 5] = [0.45, 0.219, 0.128, 0.091], NLL_gen = 3.7564, NLL_div = 3.5169, Self-BLEU-[2, 3, 4] = [0.467, 0.252, 0.142], [PPL-F, PPL-R] = 0
+[MLE-GEN] epoch 10 : pre_loss = 2.5785, BLEU-[2, 3, 4, 5] = [0.843, 0.625, 0.433, 0.305], NLL_gen = 2.5195, NLL_div = 2.2859, Self-BLEU-[2, 3, 4] = [0.858, 0.672, 0.493], [PPL-F, PPL-R] = 0
+[MLE-GEN] epoch 20 : pre_loss = 2.3843, BLEU-[2, 3, 4, 5] = [0.843, 0.646, 0.459, 0.326], NLL_gen = 2.3462, NLL_div = 2.0669, Self-BLEU-[2, 3, 4] = [0.869, 0.679, 0.494], [PPL-F, PPL-R] = 0
+[MLE-GEN] epoch 30 : pre_loss = 2.3073, BLEU-[2, 3, 4, 5] = [0.843, 0.642, 0.459, 0.332], NLL_gen = 2.2867, NLL_div = 2.1017, Self-BLEU-[2, 3, 4] = [0.851, 0.655, 0.464], [PPL-F, PPL-R] = 0
+[MLE-GEN] epoch 40 : pre_loss = 2.2619, BLEU-[2, 3, 4, 5] = [0.848, 0.657, 0.483, 0.358], NLL_gen = 2.248, NLL_div = 2.0611, Self-BLEU-[2, 3, 4] = [0.864, 0.678, 0.497], [PPL-F, PPL-R] = 0
+[MLE-GEN] epoch 50 : pre_loss = 2.2380, BLEU-[2, 3, 4, 5] = [0.827, 0.626, 0.447, 0.325], NLL_gen = 2.2314, NLL_div = 1.9599, Self-BLEU-[2, 3, 4] = [0.868, 0.686, 0.513], [PPL-F, PPL-R] = 0
+[MLE-GEN] epoch 60 : pre_loss = 2.2180, BLEU-[2, 3, 4, 5] = [0.849, 0.652, 0.478, 0.349], NLL_gen = 2.2095, NLL_div = 2.0336, Self-BLEU-[2, 3, 4] = [0.85, 0.657, 0.468], [PPL-F, PPL-R] = 0
+[MLE-GEN] epoch 70 : pre_loss = 2.2078, BLEU-[2, 3, 4, 5] = [0.846, 0.659, 0.478, 0.354], NLL_gen = 2.2005, NLL_div = 1.7856, Self-BLEU-[2, 3, 4] = [0.868, 0.681, 0.504], [PPL-F, PPL-R] = 0
+[MLE-GEN] epoch 80 : pre_loss = 2.1899, BLEU-[2, 3, 4, 5] = [0.846, 0.662, 0.485, 0.359], NLL_gen = 2.1879, NLL_div = 1.7485, Self-BLEU-[2, 3, 4] = [0.858, 0.677, 0.501], [PPL-F, PPL-R] = 0
+[MLE-GEN] epoch 90 : pre_loss = 2.1825, BLEU-[2, 3, 4, 5] = [0.835, 0.632, 0.446, 0.318], NLL_gen = 2.1824, NLL_div = 1.894, Self-BLEU-[2, 3, 4] = [0.859, 0.663, 0.479], [PPL-F, PPL-R] = 0
+[MLE-GEN] epoch 100 : pre_loss = 2.1724, BLEU-[2, 3, 4, 5] = [0.835, 0.625, 0.438, 0.301], NLL_gen = 2.1767, NLL_div = 1.9607, Self-BLEU-[2, 3, 4] = [0.869, 0.682, 0.493], [PPL-F, PPL-R] = 0
+[MLE-GEN] epoch 110 : pre_loss = 2.1662, BLEU-[2, 3, 4, 5] = [0.839, 0.644, 0.457, 0.324], NLL_gen = 2.1739, NLL_div = 1.8921, Self-BLEU-[2, 3, 4] = [0.86, 0.667, 0.481], [PPL-F, PPL-R] = 0
+[MLE-GEN] epoch 119 : pre_loss = 2.1631, BLEU-[2, 3, 4, 5] = [0.839, 0.643, 0.464, 0.346], NLL_gen = 2.1773, NLL_div = 1.6094, Self-BLEU-[2, 3, 4] = [0.872, 0.69, 0.5], [PPL-F, PPL-R] = 0
+Starting Discriminator Training...
+[MLE-DIS] d_step 0: d_loss = 0.4955, train_acc = 0.7823,
+Starting Adversarial Training...
+Initial generator: BLEU-[2, 3, 4, 5] = [0.847, 0.659, 0.471, 0.343], NLL_gen = 2.1773, NLL_div = 1.6303, Self-BLEU-[2, 3, 4] = [0.858, 0.679, 0.496], [PPL-F, PPL-R] = 0
+-----
+ADV EPOCH 0
+-----
+[ADV-GEN]: g_loss = 9027.6963, BLEU-[2, 3, 4, 5] = [0.861, 0.688, 0.508, 0.38], NLL_gen = 2.1885, NLL_div = 1.3988, Self-BLEU-[2, 3, 4] = [0.878, 0.704, 0.522], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.3412, train_acc = 0.8435,
+[ADV-DIS] d_step 1: d_loss = 0.2276, train_acc = 0.9056,
+[ADV-DIS] d_step 2: d_loss = 0.1680, train_acc = 0.9346,
+[ADV-DIS] d_step 3: d_loss = 0.1271, train_acc = 0.9536,
+-----
+ADV EPOCH 1
+-----
+[ADV-GEN]: g_loss = 3136.3965, BLEU-[2, 3, 4, 5] = [0.863, 0.681, 0.515, 0.4], NLL_gen = 2.2046, NLL_div = 1.3291, Self-BLEU-[2, 3, 4] = [0.884, 0.728, 0.556], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0913, train_acc = 0.9663,
+[ADV-DIS] d_step 1: d_loss = 0.0728, train_acc = 0.9712,
+[ADV-DIS] d_step 2: d_loss = 0.0603, train_acc = 0.9757,
+[ADV-DIS] d_step 3: d_loss = 0.0532, train_acc = 0.9767,
+-----
+ADV EPOCH 2
+-----
+[ADV-GEN]: g_loss = 1394.7983, BLEU-[2, 3, 4, 5] = [0.89, 0.737, 0.554, 0.425], NLL_gen = 2.2245, NLL_div = 1.2481, Self-BLEU-[2, 3, 4] = [0.87, 0.706, 0.523], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0491, train_acc = 0.9774,
+[ADV-DIS] d_step 1: d_loss = 0.0448, train_acc = 0.9787,
+[ADV-DIS] d_step 2: d_loss = 0.0456, train_acc = 0.9779,
+[ADV-DIS] d_step 3: d_loss = 0.0420, train_acc = 0.9789,
+-----
+ADV EPOCH 3
+-----
+[ADV-GEN]: g_loss = 964.6324, BLEU-[2, 3, 4, 5] = [0.887, 0.736, 0.552, 0.423], NLL_gen = 2.2459, NLL_div = 1.1681, Self-BLEU-[2, 3, 4] = [0.883, 0.719, 0.537], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0416, train_acc = 0.9799,
+[ADV-DIS] d_step 1: d_loss = 0.0398, train_acc = 0.9796,
+[ADV-DIS] d_step 2: d_loss = 0.0386, train_acc = 0.9798,
+[ADV-DIS] d_step 3: d_loss = 0.0397, train_acc = 0.9796,
+-----
+ADV EPOCH 4
+-----
+[ADV-GEN]: g_loss = 512.0297, BLEU-[2, 3, 4, 5] = [0.882, 0.724, 0.543, 0.425], NLL_gen = 2.2674, NLL_div = 1.1285, Self-BLEU-[2, 3, 4] = [0.875, 0.716, 0.539], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0382, train_acc = 0.9803,
+[ADV-DIS] d_step 1: d_loss = 0.0391, train_acc = 0.9807,
+[ADV-DIS] d_step 2: d_loss = 0.0386, train_acc = 0.9803,
+[ADV-DIS] d_step 3: d_loss = 0.0375, train_acc = 0.9810,
+-----
+ADV EPOCH 5
+-----
+[ADV-GEN]: g_loss = 649.9203, BLEU-[2, 3, 4, 5] = [0.869, 0.704, 0.507, 0.379], NLL_gen = 2.29, NLL_div = 1.0832, Self-BLEU-[2, 3, 4] = [0.883, 0.737, 0.559], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0381, train_acc = 0.9812,
+[ADV-DIS] d_step 1: d_loss = 0.0368, train_acc = 0.9817,
+[ADV-DIS] d_step 2: d_loss = 0.0357, train_acc = 0.9816,
+[ADV-DIS] d_step 3: d_loss = 0.0363, train_acc = 0.9819,
+-----
+ADV EPOCH 6
+-----
+[ADV-GEN]: g_loss = 453.4046, BLEU-[2, 3, 4, 5] = [0.878, 0.726, 0.535, 0.399], NLL_gen = 2.3126, NLL_div = 1.0336, Self-BLEU-[2, 3, 4] = [0.893, 0.757, 0.573], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0365, train_acc = 0.9818,
+[ADV-DIS] d_step 1: d_loss = 0.0369, train_acc = 0.9818,
+[ADV-DIS] d_step 2: d_loss = 0.0359, train_acc = 0.9825,
+[ADV-DIS] d_step 3: d_loss = 0.0364, train_acc = 0.9821,
+-----
+ADV EPOCH 7
+-----
+[ADV-GEN]: g_loss = 378.0414, BLEU-[2, 3, 4, 5] = [0.882, 0.727, 0.542, 0.416], NLL_gen = 2.3319, NLL_div = 0.9921, Self-BLEU-[2, 3, 4] = [0.887, 0.748, 0.558], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0361, train_acc = 0.9821,
+[ADV-DIS] d_step 1: d_loss = 0.0367, train_acc = 0.9824,
+[ADV-DIS] d_step 2: d_loss = 0.0347, train_acc = 0.9826,
+[ADV-DIS] d_step 3: d_loss = 0.0374, train_acc = 0.9823,
+-----
+ADV EPOCH 8
+-----
+[ADV-GEN]: g_loss = 592.5312, BLEU-[2, 3, 4, 5] = [0.886, 0.731, 0.531, 0.396], NLL_gen = 2.3484, NLL_div = 0.9774, Self-BLEU-[2, 3, 4] = [0.893, 0.754, 0.578], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0354, train_acc = 0.9826,
+[ADV-DIS] d_step 1: d_loss = 0.0360, train_acc = 0.9832,
+[ADV-DIS] d_step 2: d_loss = 0.0357, train_acc = 0.9824,
+[ADV-DIS] d_step 3: d_loss = 0.0349, train_acc = 0.9828,
+-----
+ADV EPOCH 9
+-----
+[ADV-GEN]: g_loss = 456.6135, BLEU-[2, 3, 4, 5] = [0.899, 0.754, 0.56, 0.413], NLL_gen = 2.364, NLL_div = 0.959, Self-BLEU-[2, 3, 4] = [0.897, 0.745, 0.551], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0370, train_acc = 0.9820,
+[ADV-DIS] d_step 1: d_loss = 0.0347, train_acc = 0.9830,
+[ADV-DIS] d_step 2: d_loss = 0.0348, train_acc = 0.9830,
+[ADV-DIS] d_step 3: d_loss = 0.0345, train_acc = 0.9832,
+-----
+ADV EPOCH 10
+-----
+[ADV-GEN]: g_loss = 388.3813, BLEU-[2, 3, 4, 5] = [0.886, 0.731, 0.534, 0.4], NLL_gen = 2.3797, NLL_div = 0.94, Self-BLEU-[2, 3, 4] = [0.896, 0.77, 0.592], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0341, train_acc = 0.9835,
+[ADV-DIS] d_step 1: d_loss = 0.0350, train_acc = 0.9829,
+[ADV-DIS] d_step 2: d_loss = 0.0354, train_acc = 0.9828,
+[ADV-DIS] d_step 3: d_loss = 0.0348, train_acc = 0.9828,
+-----
+ADV EPOCH 11
+-----
+[ADV-GEN]: g_loss = 412.2821, BLEU-[2, 3, 4, 5] = [0.873, 0.712, 0.511, 0.363], NLL_gen = 2.3945, NLL_div = 0.9229, Self-BLEU-[2, 3, 4] = [0.886, 0.731, 0.521], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0329, train_acc = 0.9836,
+[ADV-DIS] d_step 1: d_loss = 0.0333, train_acc = 0.9835,
+[ADV-DIS] d_step 2: d_loss = 0.0337, train_acc = 0.9834,
+[ADV-DIS] d_step 3: d_loss = 0.0336, train_acc = 0.9834,
+-----
+ADV EPOCH 12
+-----
+[ADV-GEN]: g_loss = 373.1473, BLEU-[2, 3, 4, 5] = [0.881, 0.72, 0.516, 0.377], NLL_gen = 2.4083, NLL_div = 0.9279, Self-BLEU-[2, 3, 4] = [0.893, 0.745, 0.555], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0333, train_acc = 0.9838,
+[ADV-DIS] d_step 1: d_loss = 0.0330, train_acc = 0.9835,
+[ADV-DIS] d_step 2: d_loss = 0.0326, train_acc = 0.9838,
+[ADV-DIS] d_step 3: d_loss = 0.0330, train_acc = 0.9839,
+-----
+ADV EPOCH 13
+-----
+[ADV-GEN]: g_loss = 386.0228, BLEU-[2, 3, 4, 5] = [0.872, 0.696, 0.499, 0.355], NLL_gen = 2.4216, NLL_div = 0.9078, Self-BLEU-[2, 3, 4] = [0.888, 0.737, 0.543], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0323, train_acc = 0.9842,
+[ADV-DIS] d_step 1: d_loss = 0.0324, train_acc = 0.9840,
+[ADV-DIS] d_step 2: d_loss = 0.0317, train_acc = 0.9840,
+[ADV-DIS] d_step 3: d_loss = 0.0334, train_acc = 0.9837,
+-----
+ADV EPOCH 14
+-----
+[ADV-GEN]: g_loss = 332.3901, BLEU-[2, 3, 4, 5] = [0.874, 0.704, 0.502, 0.37], NLL_gen = 2.4345, NLL_div = 0.8957, Self-BLEU-[2, 3, 4] = [0.903, 0.776, 0.605], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0314, train_acc = 0.9845,
+[ADV-DIS] d_step 1: d_loss = 0.0324, train_acc = 0.9841,
+[ADV-DIS] d_step 2: d_loss = 0.0316, train_acc = 0.9843,
+[ADV-DIS] d_step 3: d_loss = 0.0316, train_acc = 0.9843,
+-----
+ADV EPOCH 15
+-----
+[ADV-GEN]: g_loss = 239.0159, BLEU-[2, 3, 4, 5] = [0.879, 0.721, 0.508, 0.365], NLL_gen = 2.4469, NLL_div = 0.8694, Self-BLEU-[2, 3, 4] = [0.88, 0.733, 0.537], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0320, train_acc = 0.9844,
+[ADV-DIS] d_step 1: d_loss = 0.0317, train_acc = 0.9840,
+[ADV-DIS] d_step 2: d_loss = 0.0316, train_acc = 0.9842,
+[ADV-DIS] d_step 3: d_loss = 0.0315, train_acc = 0.9842,
+-----
+ADV EPOCH 16
+-----
+[ADV-GEN]: g_loss = 363.5707, BLEU-[2, 3, 4, 5] = [0.888, 0.719, 0.508, 0.375], NLL_gen = 2.4572, NLL_div = 0.8769, Self-BLEU-[2, 3, 4] = [0.877, 0.73, 0.524], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0308, train_acc = 0.9847,
+[ADV-DIS] d_step 1: d_loss = 0.0305, train_acc = 0.9849,
+[ADV-DIS] d_step 2: d_loss = 0.0291, train_acc = 0.9850,
+[ADV-DIS] d_step 3: d_loss = 0.0304, train_acc = 0.9848,
+-----
+ADV EPOCH 17
+-----
+[ADV-GEN]: g_loss = 306.0565, BLEU-[2, 3, 4, 5] = [0.876, 0.698, 0.493, 0.356], NLL_gen = 2.4669, NLL_div = 0.8653, Self-BLEU-[2, 3, 4] = [0.888, 0.744, 0.556], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0294, train_acc = 0.9854,
+[ADV-DIS] d_step 1: d_loss = 0.0298, train_acc = 0.9854,
+[ADV-DIS] d_step 2: d_loss = 0.0290, train_acc = 0.9859,
+[ADV-DIS] d_step 3: d_loss = 0.0292, train_acc = 0.9856,
+-----
+ADV EPOCH 18
+-----
+[ADV-GEN]: g_loss = 430.3870, BLEU-[2, 3, 4, 5] = [0.896, 0.745, 0.532, 0.378], NLL_gen = 2.4765, NLL_div = 0.8645, Self-BLEU-[2, 3, 4] = [0.891, 0.745, 0.553], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0279, train_acc = 0.9861,
+[ADV-DIS] d_step 1: d_loss = 0.0276, train_acc = 0.9862,
+[ADV-DIS] d_step 2: d_loss = 0.0271, train_acc = 0.9864,
+[ADV-DIS] d_step 3: d_loss = 0.0270, train_acc = 0.9865,
+-----
+ADV EPOCH 19
+-----
+[ADV-GEN]: g_loss = 407.3346, BLEU-[2, 3, 4, 5] = [0.867, 0.696, 0.463, 0.318], NLL_gen = 2.4868, NLL_div = 0.871, Self-BLEU-[2, 3, 4] = [0.874, 0.728, 0.542], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0266, train_acc = 0.9871,
+[ADV-DIS] d_step 1: d_loss = 0.0257, train_acc = 0.9870,
+[ADV-DIS] d_step 2: d_loss = 0.0261, train_acc = 0.9869,
+[ADV-DIS] d_step 3: d_loss = 0.0261, train_acc = 0.9869,
+-----
+ADV EPOCH 20
+-----
+[ADV-GEN]: g_loss = 282.2347, BLEU-[2, 3, 4, 5] = [0.871, 0.7, 0.477, 0.342], NLL_gen = 2.4957, NLL_div = 0.8605, Self-BLEU-[2, 3, 4] = [0.894, 0.767, 0.575], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0254, train_acc = 0.9873,
+[ADV-DIS] d_step 1: d_loss = 0.0253, train_acc = 0.9872,
+[ADV-DIS] d_step 2: d_loss = 0.0258, train_acc = 0.9872,
+[ADV-DIS] d_step 3: d_loss = 0.0261, train_acc = 0.9870,
+-----
+ADV EPOCH 21
+-----
+[ADV-GEN]: g_loss = 202.3251, BLEU-[2, 3, 4, 5] = [0.875, 0.715, 0.504, 0.371], NLL_gen = 2.5031, NLL_div = 0.8539, Self-BLEU-[2, 3, 4] = [0.899, 0.758, 0.567], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0252, train_acc = 0.9873,
+[ADV-DIS] d_step 1: d_loss = 0.0245, train_acc = 0.9875,
+[ADV-DIS] d_step 2: d_loss = 0.0257, train_acc = 0.9873,
+[ADV-DIS] d_step 3: d_loss = 0.0251, train_acc = 0.9873,
+-----
+ADV EPOCH 22
+-----
+[ADV-GEN]: g_loss = 283.0007, BLEU-[2, 3, 4, 5] = [0.876, 0.706, 0.48, 0.337], NLL_gen = 2.5107, NLL_div = 0.8523, Self-BLEU-[2, 3, 4] = [0.894, 0.752, 0.563], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0260, train_acc = 0.9872,
+[ADV-DIS] d_step 1: d_loss = 0.0260, train_acc = 0.9873,
+[ADV-DIS] d_step 2: d_loss = 0.0252, train_acc = 0.9874,
+[ADV-DIS] d_step 3: d_loss = 0.0258, train_acc = 0.9871,
+-----
+ADV EPOCH 23
+-----
+[ADV-GEN]: g_loss = 343.8605, BLEU-[2, 3, 4, 5] = [0.851, 0.663, 0.443, 0.305], NLL_gen = 2.5192, NLL_div = 0.8473, Self-BLEU-[2, 3, 4] = [0.889, 0.75, 0.553], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0253, train_acc = 0.9874,
+[ADV-DIS] d_step 1: d_loss = 0.0257, train_acc = 0.9873,
+[ADV-DIS] d_step 2: d_loss = 0.0258, train_acc = 0.9872,
+[ADV-DIS] d_step 3: d_loss = 0.0252, train_acc = 0.9874,
+-----
+ADV EPOCH 24
+-----
+[ADV-GEN]: g_loss = 352.9250, BLEU-[2, 3, 4, 5] = [0.871, 0.698, 0.464, 0.318], NLL_gen = 2.5261, NLL_div = 0.8314, Self-BLEU-[2, 3, 4] = [0.889, 0.756, 0.566], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0266, train_acc = 0.9874,
+[ADV-DIS] d_step 1: d_loss = 0.0266, train_acc = 0.9871,
+[ADV-DIS] d_step 2: d_loss = 0.0263, train_acc = 0.9873,
+[ADV-DIS] d_step 3: d_loss = 0.0270, train_acc = 0.9872,
+-----
+ADV EPOCH 25
+-----
+[ADV-GEN]: g_loss = 239.8576, BLEU-[2, 3, 4, 5] = [0.856, 0.68, 0.471, 0.334], NLL_gen = 2.5319, NLL_div = 0.8453, Self-BLEU-[2, 3, 4] = [0.887, 0.747, 0.553], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0270, train_acc = 0.9872,
+[ADV-DIS] d_step 1: d_loss = 0.0271, train_acc = 0.9871,
+[ADV-DIS] d_step 2: d_loss = 0.0267, train_acc = 0.9875,
+[ADV-DIS] d_step 3: d_loss = 0.0265, train_acc = 0.9874,
+-----
+ADV EPOCH 26
+-----
+[ADV-GEN]: g_loss = 300.3567, BLEU-[2, 3, 4, 5] = [0.858, 0.673, 0.45, 0.313], NLL_gen = 2.5383, NLL_div = 0.8261, Self-BLEU-[2, 3, 4] = [0.903, 0.769, 0.567], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0269, train_acc = 0.9875,
+[ADV-DIS] d_step 1: d_loss = 0.0260, train_acc = 0.9875,
+[ADV-DIS] d_step 2: d_loss = 0.0263, train_acc = 0.9875,
+[ADV-DIS] d_step 3: d_loss = 0.0268, train_acc = 0.9873,
+-----
+ADV EPOCH 27
+-----
+[ADV-GEN]: g_loss = 258.9229, BLEU-[2, 3, 4, 5] = [0.86, 0.671, 0.442, 0.308], NLL_gen = 2.5452, NLL_div = 0.8125, Self-BLEU-[2, 3, 4] = [0.895, 0.753, 0.555], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0277, train_acc = 0.9873,
+[ADV-DIS] d_step 1: d_loss = 0.0274, train_acc = 0.9874,
+[ADV-DIS] d_step 2: d_loss = 0.0275, train_acc = 0.9874,
+[ADV-DIS] d_step 3: d_loss = 0.0274, train_acc = 0.9874,
+-----
+ADV EPOCH 28
+-----
+[ADV-GEN]: g_loss = 208.3941, BLEU-[2, 3, 4, 5] = [0.87, 0.693, 0.461, 0.317], NLL_gen = 2.5516, NLL_div = 0.8138, Self-BLEU-[2, 3, 4] = [0.898, 0.772, 0.586], [PPL-F, PPL-R] = 0
+[ADV-DIS] d_step 0: d_loss = 0.0268, train_acc = 0.9876,
+[ADV-DIS] d_step 1: d_loss = 0.0274, train_acc = 0.9874,
+[ADV-DIS] d_step 2: d_loss = 0.0272, train_acc = 0.9876,
+[ADV-DIS] d_step 3: d_loss = 0.0272, train_acc = 0.9875,
+-----
+ADV EPOCH 29
+-----
