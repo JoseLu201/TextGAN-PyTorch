@@ -67,6 +67,15 @@ def load_generator(model_class, model_path, embedding_dim, hidden_dim, vocab_siz
     return generator
 
 def generate_tweets(generator, num_samples, batch_size, idx2word_dict, start_letter):
+    '''
+    Generate tweets using the generator model.
+    Args:
+        generator: The generator model.
+        num_samples: Number of tweets to generate.
+        batch_size: Number of tweets to generate in parallel.
+        idx2word_dict: A dictionary mapping word indices to words.
+        start_letter: The start letter for the tweets.
+    '''
     tweets = ""
     try:
         with torch.no_grad():
@@ -152,7 +161,8 @@ def get_all_data_json():
     
     return data
 
-def main(load_model_path,gen_model, word = 'BOS'):
+def setup_and_generate_tweets(load_model_path,gen_model, word = 'BOS'):
+    
     # os.chdir(os.path.dirname(os.path.abspath(__file__)))
     print(os.path.dirname(os.path.abspath(__file__)))
     # data_path = './save/20240711/pp_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl153_temp1_lfd0.0_T0711_1010_57/'
@@ -161,6 +171,7 @@ def main(load_model_path,gen_model, word = 'BOS'):
     log_file_path = os.path.join(load_model_path, 'log.txt')
     if not os.path.exists(log_file_path):
         raise FileNotFoundError("Log file not found.", get_current_path())
+    
     model_path = os.path.join(load_model_path, 'models', gen_model)
     
     params = parse_log_file(log_file_path)
@@ -197,11 +208,13 @@ def main(load_model_path,gen_model, word = 'BOS'):
     # start_letter = [sanitize_tweet(t) for t in start_letter]
     
     print("Start letter:", start_letter)
+    
     try:
         start_letter = [int(word2idx_dict.get(sl[0])) for sl in start_letter]
     except TypeError:
         print("Start letter not found in dictionary. Using default start letter.")
         start_letter = [1]
+        
     print("Start letter token:", start_letter)
     
     tweets = generate_tweets(generator, num_samples, batch_size,idx2word_dict, start_letter[0])
@@ -218,4 +231,4 @@ if __name__ == "__main__":
     data = get_all_data_json()
     print(json.dumps(data, indent=4))
 
-    print(main('./save/20240814/psoe_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl60_temp1_lfd0.0_T0814_1540_59/', 'gen_ADV_training_00038.pt', 'pedro'))
+    print(setup_and_generate_tweets('./save/20240814/psoe_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl60_temp1_lfd0.0_T0814_1540_59/', 'gen_ADV_training_00038.pt', 'pedro'))

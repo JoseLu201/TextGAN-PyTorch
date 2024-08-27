@@ -22,20 +22,6 @@ import config as cfg
 import io
 from utils.data_loader import get_tokenlized, get_tokenlized_words, tokens_to_tensor
 
-def parse_log_file(log_file_path):
-    """Parse and clean the log file to extract model parameters."""
-    params = {}
-    with open(log_file_path, 'r') as file:
-        for line in file:
-            line = line.strip()
-            if line.startswith('>>>'):
-                # Remove leading '>>> ' and clean the line
-                clean_line = line[4:].strip()
-                key, value = clean_line.split(':', 1)
-                key = key.strip()
-                value = value.strip()
-                params[key] = value
-    return params
 
 def load_discriminator(model_class, model_path, embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx, gpu=False, dropout=0.2):
     models_dict = {
@@ -59,6 +45,21 @@ def load_discriminator(model_class, model_path, embedding_dim, hidden_dim, vocab
     dis.eval()
     return dis
 
+def parse_log_file(log_file_path):
+    """Parse and clean the log file to extract model parameters."""
+    params = {}
+    with open(log_file_path, 'r') as file:
+        for line in file:
+            line = line.strip()
+            if line.startswith('>>>'):
+                # Remove leading '>>> ' and clean the line
+                clean_line = line[4:].strip()
+                key, value = clean_line.split(':', 1)
+                key = key.strip()
+                value = value.strip()
+                params[key] = value
+    return params
+
 def classify_tweets(discriminator, tweets_tokenized, word2idx_dict, padding_idx, gpu=False):
     predictions = []
     for data in tweets_tokenized:
@@ -72,19 +73,13 @@ def classify_tweets(discriminator, tweets_tokenized, word2idx_dict, padding_idx,
             logits = discriminator.forward(inp)
             print("Logits:", logits)
             probs = F.softmax(logits, dim=-1)
-            probs_np = probs.cpu().numpy()  # Convertir a numpy array
+            probs_np = probs.cpu().numpy()
             probs_rounded = np.round(probs_np, 4)
             print("Probs:", probs)
             print("Probs:", probs_rounded)
             predictions.append(probs_rounded.tolist())
     return predictions
 
-# Example usage:
-# discriminator = load_discriminator(model_class, model_path, embedding_dim, hidden_dim, vocab_size, max_seq_len, padding_idx, gpu)
-# tweets_tokenized = get_tokenlized_words(tweets_sani)
-# predictions = classify_tweets(discriminator, tweets_tokenized, word2idx_dict, padding_idx, gpu)
-# for pred, tw in zip(predictions, tweets):
-#     print(f"{'Real' if pred == 1 else 'Fake'} -> {tw :<100}")
     
 
 def main_discriminar_tweet(load_model_path, dis_model, tweets):
@@ -137,10 +132,7 @@ def main_discriminar_tweet(load_model_path, dis_model, tweets):
     print("Tweets tokenized:", tweets_tokenized)
     predictions = classify_tweets(discriminator, tweets_tokenized, word2idx_dict, padding_idx, gpu)
     return predictions
-    
-    # for pred, tw in zip(predictions, tweets):
-    #     # print(f"{tw :<100} -> {'Real' if pred == 1 else 'Fake'}")
-    #     print(f"{'Real' if pred == 1 else 'Fake'} -> {tw :<100}")
+
 
 if __name__ == "__main__":
     gpu = torch.cuda.is_available()
