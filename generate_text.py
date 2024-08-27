@@ -68,16 +68,19 @@ def load_generator(model_class, model_path, embedding_dim, hidden_dim, vocab_siz
 
 def generate_tweets(generator, num_samples, batch_size, idx2word_dict, start_letter):
     tweets = ""
-    with torch.no_grad():
-        generator.init_hidden(batch_size)
-        samples = generator.sample(num_samples, batch_size, start_letter)
-        # samples = generator.sample_and_plot(num_samples, batch_size, start_letter)
-        
-        tokens = tensor_to_tokens(samples, idx2word_dict)
-        
-        for sent in tokens:
-                tweets+=(' '.join(sent))
-                tweets+=('\n\n')
+    try:
+        with torch.no_grad():
+            generator.init_hidden(batch_size)
+            samples = generator.sample(num_samples, batch_size, start_letter)
+            # samples = generator.sample_and_plot(num_samples, batch_size, start_letter)
+            
+            tokens = tensor_to_tokens(samples, idx2word_dict)
+            
+            for sent in tokens:
+                    tweets+=(' '.join(sent))
+                    tweets+=('\n\n')
+    except Exception as e:
+        raise Exception("Error generating tweets.", e)
     return tweets
 
 
@@ -188,18 +191,20 @@ def main(load_model_path,gen_model, word = 'BOS'):
     batch_size = 1  # Tweets en paralelo que se obtendran
     start_letter = [f'{word}']
     
-    
+    if word != 'BOS':
+        start_letter = get_tokenlized_words(start_letter)
+        
     # start_letter = [sanitize_tweet(t) for t in start_letter]
-    start_letter = get_tokenlized_words(start_letter)
+    
     print("Start letter:", start_letter)
     try:
         start_letter = [int(word2idx_dict.get(sl[0])) for sl in start_letter]
     except TypeError:
         print("Start letter not found in dictionary. Using default start letter.")
-        start_letter = 1
+        start_letter = [1]
     print("Start letter token:", start_letter)
     
-    tweets = generate_tweets(generator, num_samples, batch_size,idx2word_dict, start_letter)
+    tweets = generate_tweets(generator, num_samples, batch_size,idx2word_dict, start_letter[0])
 
     return tweets
 
@@ -213,5 +218,4 @@ if __name__ == "__main__":
     data = get_all_data_json()
     print(json.dumps(data, indent=4))
 
-    # for i, tweet in enumerate(tweets):
-    #     print(f"Tweet {i+1}: {tweet}")
+    print(main('./save/20240814/psoe_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl60_temp1_lfd0.0_T0814_1540_59/', 'gen_ADV_training_00038.pt', 'pedro'))
