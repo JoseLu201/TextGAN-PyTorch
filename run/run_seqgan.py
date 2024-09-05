@@ -38,12 +38,12 @@ CUDA = int(True)
 oracle_pretrain = int(True)
 gen_pretrain = int(False)
 dis_pretrain = int(False)
-MLE_train_epoch = 120 
+MLE_train_epoch = 100 
 ADV_train_epoch = 200 
 tips = 'SeqGAN experiments'
 
 if_real_data = [int(True)]
-dataset = ['pp_tweets']
+dataset = ['podemos_tweets']
 vocab_size = [0]
 
 if_checkpoints = int(False)
@@ -54,12 +54,12 @@ data_shuffle = int(False)
 model_type = 'vanilla'
 gen_init = 'normal'
 dis_init = 'uniform'
-samples_num =  10000
-batch_size = 128
-max_seq_len = 20
+samples_num =  40
+batch_size = 32
+max_seq_len = 40
 gen_lr = 0.01
 dis_lr = 1e-4
-pre_log_step = 10
+pre_log_step = 5
 adv_log_step = 1
 
 # ===Generator===
@@ -71,8 +71,8 @@ gen_hidden_dim = 32
 # ===Discriminator===
 d_step = 1
 d_epoch = 1
-ADV_d_step = 4
-ADV_d_epoch = 2
+ADV_d_step = 1
+ADV_d_epoch = 1
 dis_embed_dim = 64
 dis_hidden_dim = 64
 
@@ -82,7 +82,7 @@ use_nll_gen = int(True)
 use_nll_div = int(True)
 use_bleu = int(True)
 use_self_bleu = int(True)
-use_ppl = int(False)
+use_ppl = int(True)
 
 args = [
     # Program
