@@ -218,6 +218,7 @@ def setup_and_generate_tweets(load_model_path,gen_model, word = 'BOS'):
     print("Start letter token:", start_letter)
     
     tweets = generate_tweets(generator, num_samples, batch_size,idx2word_dict, start_letter[0])
+    tweets = tweets.replace('``', "''").replace("$ mention $", "$MENTION$")
 
     return tweets
 
