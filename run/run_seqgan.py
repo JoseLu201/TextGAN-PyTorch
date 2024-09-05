@@ -82,7 +82,7 @@ use_nll_gen = int(True)
 use_nll_div = int(True)
 use_bleu = int(True)
 use_self_bleu = int(True)
-use_ppl = int(True)
+use_ppl = int(False)
 
 args = [
     # Program
