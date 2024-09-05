@@ -31,6 +31,7 @@ title_dict = {
     'dis_eval_acc': 'eval_acc',
     'NLL_oracle': 'NLL_oracle',
     'NLL_gen': 'NLL_gen',
+    'NLL_div': 'NLL_div',
     'BLEU': 'BLEU',
     'Self-BLEU': 'Self-BLEU',
 }
@@ -57,7 +58,7 @@ def get_log_data(filename):
         all_lines = fin.read().strip().split('\n')
         data_dict = {'pre_loss': [], 'g_loss': [], 'mana_loss': [], 'work_loss': [],
                      'd_loss': [], 'train_acc': [], 'eval_acc': [], 'NLL_oracle': [],
-                     'NLL_gen': [], 'BLEU': [], 'Self-BLEU': [],}
+                     'NLL_gen': [], 'NLL_div': [],'BLEU': [], 'Self-BLEU': [],}
 
         for line in all_lines:
             items = line.split()
@@ -90,20 +91,23 @@ def process_log_line(line, regex_key='BLEU'):
 
 
 if __name__ == '__main__':
-    log_file_root = '../log/'
-    # log_file_root = '../'
+    # log_file_root = '../log/'
+    log_file_root = '../'
     # Custom your log files in lists, no more than len(color_list)
     
-    # log_file_list = ['dpgan_log'] 
-    # log_file_list = ['save/20240809/pp_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl60_temp1_lfd0.0_T0809_1310_21/log']
-    log_file_list = ['seqgan_log_01']
+    # log_file_list = ['save/20240809/pp_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl60_temp1_lfd0.0_T0809_1310_21/log'] 
+    log_file_list = ['save/20240817/vox_tweets/seqgan_vanilla_dt-Ra_lt-rsgan_mt-ra_et-Ra_sl60_temp1_lfd0.0_T0817_1106_25/log']
+    # log_file_list = ['seqgan_log_01']
+    
+    partido = log_file_list[0].split('/')[2].split('_')[0]
     
     # legend_text = ['SeqGAN', 'LeakGAN', 'RelGAN']
 
     color_id = 0
-    if_save = True
+    if_save = False
     # legend_text = log_file_list
     log_file = log_file_root + log_file_list[0] + '.txt'
+    
     all_data = get_log_data(log_file)
     print(all_data)
     
@@ -116,7 +120,7 @@ if __name__ == '__main__':
         
         if all_data[title_dict[item]] != []:
             plt_data(all_data[title_dict[item]], len(all_data[title_dict[item]]),
-                    "01_TestSEQ_"+item, color_id, if_save)
+                    f"final/{partido}/SeqGan_{partido.upper()}_"+item, color_id, if_save)
             print(f"Max {bcolors.OKBLUE + item + bcolors.ENDC}: {max(all_data[title_dict[item]])} --- Epoch: {all_data[title_dict[item]].index(max(all_data[title_dict[item]]))}")
             print(f"Min {item}: {min(all_data[title_dict[item]])} --- Epoch: {all_data[title_dict[item]].index(min(all_data[title_dict[item]]))}")
         # color_id += 1
